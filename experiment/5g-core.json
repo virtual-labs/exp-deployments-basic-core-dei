@@ -1,0 +1,352 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2025-11-10T04:52:18.275Z",
+  "nfs": [
+    {
+      "id": "nrf-1762750264360-oh9eu",
+      "type": "NRF",
+      "name": "NRF-1",
+      "position": {
+        "x": 118,
+        "y": 22
+      },
+      "color": "#9b59b6",
+      "icon": "simulation/images/icons/nrf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750269363,
+      "config": {
+        "ipAddress": "192.168.1.10",
+        "port": 9090,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "amf-1762750272489-572bf",
+      "type": "AMF",
+      "name": "AMF-1",
+      "position": {
+        "x": 218,
+        "y": 249
+      },
+      "color": "#3498db",
+      "icon": "simulation/images/icons/amf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750277493,
+      "config": {
+        "ipAddress": "192.168.1.11",
+        "port": 38412,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "smf-1762750274710-bsru0",
+      "type": "SMF",
+      "name": "SMF-1",
+      "position": {
+        "x": 354,
+        "y": 258
+      },
+      "color": "#00bcd4",
+      "icon": "simulation/images/icons/smf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750279714,
+      "config": {
+        "ipAddress": "192.168.1.12",
+        "port": 8805,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "ausf-1762750277537-7vhs7",
+      "type": "AUSF",
+      "name": "AUSF-1",
+      "position": {
+        "x": 482,
+        "y": 251
+      },
+      "color": "#ff9800",
+      "icon": "simulation/images/icons/ausf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750282548,
+      "config": {
+        "ipAddress": "192.168.1.13",
+        "port": 8083,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "udm-1762750284050-6u3tp",
+      "type": "UDM",
+      "name": "UDM-1",
+      "position": {
+        "x": 516,
+        "y": 22
+      },
+      "color": "#ff5722",
+      "icon": "simulation/images/icons/udm.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750289059,
+      "config": {
+        "ipAddress": "192.168.1.14",
+        "port": 8084,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "pcf-1762750286130-3wozg",
+      "type": "PCF",
+      "name": "PCF-1",
+      "position": {
+        "x": 369,
+        "y": 21
+      },
+      "color": "#e91e63",
+      "icon": "simulation/images/icons/pcf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750291137,
+      "config": {
+        "ipAddress": "192.168.1.15",
+        "port": 8085,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "nssf-1762750295807-fr06w",
+      "type": "NSSF",
+      "name": "NSSF-1",
+      "position": {
+        "x": 234,
+        "y": 22
+      },
+      "color": "#ffc107",
+      "icon": "simulation/images/icons/nssf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750300817,
+      "config": {
+        "ipAddress": "192.168.1.16",
+        "port": 8086,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "udr-1762750298834-pfh14",
+      "type": "UDR",
+      "name": "UDR-1",
+      "position": {
+        "x": 638,
+        "y": 24
+      },
+      "color": "#009688",
+      "icon": "simulation/images/icons/udr.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750303843,
+      "config": {
+        "ipAddress": "192.168.1.17",
+        "port": 8087,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1762750281904-cx4ul",
+      "sourceId": "amf-1762750272489-572bf",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750281904,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750284012-d63jl",
+      "sourceId": "smf-1762750274710-bsru0",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFDiscovery",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750284012,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750286319-f8npf",
+      "sourceId": "ausf-1762750277537-7vhs7",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750286319,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750292472-dyof4",
+      "sourceId": "udm-1762750284050-6u3tp",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750292473,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750295087-sumtp",
+      "sourceId": "pcf-1762750286130-3wozg",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750295087,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750304457-cd1vm",
+      "sourceId": "nssf-1762750295807-fr06w",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750304457,
+      "isManual": false,
+      "showVisual": false
+    },
+    {
+      "id": "conn-1762750308470-86ffu",
+      "sourceId": "udr-1762750298834-pfh14",
+      "targetId": "nrf-1762750264360-oh9eu",
+      "interfaceName": "Nnrf_NFManagement",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750308470,
+      "isManual": false,
+      "showVisual": false
+    }
+  ],
+  "buses": [
+    {
+      "id": "bus-1762750244750-rnlja",
+      "name": "Service Bus",
+      "orientation": "horizontal",
+      "position": {
+        "x": 120,
+        "y": 153
+      },
+      "length": 600,
+      "thickness": 8,
+      "color": "#3498db",
+      "type": "service-bus",
+      "connections": [
+        "nrf-1762750264360-oh9eu",
+        "amf-1762750272489-572bf",
+        "smf-1762750274710-bsru0",
+        "ausf-1762750277537-7vhs7",
+        "udm-1762750284050-6u3tp",
+        "pcf-1762750286130-3wozg",
+        "nssf-1762750295807-fr06w",
+        "udr-1762750298834-pfh14"
+      ]
+    }
+  ],
+  "busConnections": [
+    {
+      "id": "bus-conn-1762750264365-qgpwn",
+      "nfId": "nrf-1762750264360-oh9eu",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nnrf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750264365
+    },
+    {
+      "id": "bus-conn-1762750272493-oeqkg",
+      "nfId": "amf-1762750272489-572bf",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Namf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750272493
+    },
+    {
+      "id": "bus-conn-1762750274713-pihi0",
+      "nfId": "smf-1762750274710-bsru0",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nsmf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750274713
+    },
+    {
+      "id": "bus-conn-1762750277543-ax1uf",
+      "nfId": "ausf-1762750277537-7vhs7",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nausf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750277543
+    },
+    {
+      "id": "bus-conn-1762750284058-asxtc",
+      "nfId": "udm-1762750284050-6u3tp",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nudm",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750284058
+    },
+    {
+      "id": "bus-conn-1762750286137-2w7cu",
+      "nfId": "pcf-1762750286130-3wozg",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Npcf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750286137
+    },
+    {
+      "id": "bus-conn-1762750295817-8xb2h",
+      "nfId": "nssf-1762750295807-fr06w",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nnssf",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750295817
+    },
+    {
+      "id": "bus-conn-1762750298845-l0isc",
+      "nfId": "udr-1762750298834-pfh14",
+      "busId": "bus-1762750244750-rnlja",
+      "type": "bus-connection",
+      "interfaceName": "Nudr",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750298845
+    }
+  ]
+}
