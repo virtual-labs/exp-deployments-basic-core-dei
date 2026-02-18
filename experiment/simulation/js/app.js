@@ -78,6 +78,7 @@ async function initializeApp() {
         // ==========================================
         console.log('\n🎨 Step 4: Initializing user interface...');
         window.uiController.init();
+        if (window.dockerTerminal) window.dockerTerminal.init();
         console.log('✅ UI initialized');
 
         // ==========================================
