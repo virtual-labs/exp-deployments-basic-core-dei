@@ -1,180 +1,200 @@
-# Procedure: 5G Service-Based Architecture (SBA) Dashboard Deployment
-
 ## Step 1: Introduction to the 5G Service-Based Architecture (SBA) Dashboard
 
-The 5G Service-Based Architecture Dashboard is a comprehensive platform designed to facilitate the deployment, configuration, and validation of core network functions (NFs) within a simulated 5G Core environment. This dashboard provides a user-friendly interface for managing complex network topologies and inter-NF communications.
+The 5G Service-Based Architecture Dashboard allows you to deploy, configure, and validate core network functions (NFs) in a simulated 5G Core environment.
 
-The 5G Core can be deployed using either of the following approaches:
+You can deploy the 5G Core using either of the following methods:
 
-1. **Manual NF-by-NF Deployment** – Sequential initialization of network functions
-2. **One-Click Core Deployment** – Automated simultaneous deployment of all network functions
+1. Deploy using Terminal
+2. Manual NF-by-NF Deployment
+3. One-Click Core Deployment
 
-Each method is described in detail in the following sections.
+Each method is described in detail below.
 
 ---
 
-## Method 1: Manual NF-by-NF Deployment
+## Method 1: Deploy Network Functions Using Terminal (Docker Compose)
 
-### Step 2: Select and Configure a Network Function (NF)
+This method allows you to deploy all Network Functions at once using predefined Docker Compose configurations.
 
-#### 2.1 Selecting an NF
+### Step 2: Open the SBA Terminal
 
-1. Navigate to the SBA Dashboard main interface.
-2. Click on any NF tile corresponding to the desired network function (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF).
+1. Launch the SBA Dashboard.
+2. Click the **Terminal** button available in the dashboard interface.
+3. Ensure you are in the project root directory.
 
 ![Network Function Selection](./images/prd1.png)
 
-**Figure 1:** Select Network Function
+### Step 3: Launch All Network Functions
 
-#### 2.2 Entering Configuration Details
+Click on the terminal button to open the terminal then from the project root directory, execute the following command:
 
-Upon selecting an NF, the NF Configuration Panel will be displayed. Enter the following required parameters:
+```bash
+docker compose -f docker-compose.yml up -d
+```
+![Network Function Selection](./images/prd2.png)
 
-- **IP Address:** Specify a valid IPv4 address (e.g., 192.168.1.12)
-- **Port Number:** Provide the listening port for the NF (e.g., 8080, 9090)
-- **Protocol:** Select the communication protocol from the dropdown menu:
-  - HTTP/1
-  - HTTP/2
+This confirms that all core NFs and supporting services are running successfully.
 
-#### 2.3 Starting the NF
+### Step 4: Verify Docker Network Creation
 
-1. Review the entered configuration parameters for accuracy.
-2. Click the **Start NF** button to initiate the network function.
+List available Docker networks:
 
-#### 2.4 Stabilization and Inter-NF Communication
+```bash
+docker network ls
+```
+![Network Function Selection](./images/prd3.png)
 
-The NF will undergo an initialization phase lasting approximately 4–5 seconds. During this time:
+You should see the oaiworkshop network:
 
-- The NF initializes its internal services and communication endpoints
-- Upon successful initialization, the NF automatically attempts to establish communication with all available network functions
-- The system registers the NF within the SBA topology
+```
+NETWORK ID     NAME          DRIVER    SCOPE
+5a7a4f1ebed2   oaiworkshop   bridge    local
+```
 
-![NF Initialization and Stabilization](./images/prd2.png)
+### Step 4: Inspect Network and NF IP Assignment
 
-**Figure 2:** NF Start and Stabilization
+Inspect the OAI network to verify IP allocation:
 
-### Step 3: Repeat the Process for All NFs
+```bash
+docker network inspect oaiworkshop
+```
+![Network Function Selection](./images/prd4.png)
 
-To establish a complete and operational 5G Core network:
+This confirms successful NF deployment and network stabilization.
 
-1. Repeat Steps 2.1 through 2.4 for each network function in the required topology.
-2. Ensure that each NF achieves the following state before proceeding to the next:
-   - **Configured** – All parameters are correctly specified
-   - **Started** – The NF has been successfully initiated
-   - **Stabilized** – The NF has completed initialization and established inter-NF connections
+### Step 5: Stop and Remove All Network Functions
 
-Once all NFs have been successfully deployed and stabilized, the manual 5G Core setup becomes fully operational and interconnected.
+To stop and clean up all running containers and networks:
 
-![Complete Manual Core Deployment](./images/prd3.png)
-
-**Figure 3:** Manually Started Core Network
+```bash
+docker compose -f docker-compose.yml down
+```
 
 ---
 
-## Method 2: One-Click Core Deployment
+![Network Function Selection](./images/prd5.png)
 
-### Step 4: Initiate One-Click Core Deployment
+## Method 2: Start NFs Manually (One by One)
 
-One-Click Core Deployment automates the entire deployment process, eliminating the need for sequential NF configuration:
+### Step 6: Select and Configure a Network Function (NF)
 
-1. Locate and click the **Core Deploy** button on the main dashboard interface.
-2. A fully automated deployment process will commence immediately.
-3. The system will initialize all network functions and establish inter-NF communication automatically.
+1. **Select an NF:**
+   - Click any NF tile (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF) on the dashboard.
 
-**Note:** Depending on the number of network functions in the topology, the complete initialization process may require several seconds to complete.
+![Network Function Selection](./images/prd6.png)
 
-### Step 5: Understanding the Automated Deployment Steps
+2. **Enter Configuration Details:**
+   - In the NF Configuration Panel:
+     - **IP Address:** Enter a valid IPv4 address (e.g., 192.168.1.12).
+     - **Port Number:** Provide the NF's port (e.g., 8080, 9090, etc.).
+     - **Protocol:** Select the protocol from the dropdown: HTTP/1 or HTTP/2.
 
-The One-Click Core Deployment process executes the following internal steps sequentially:
+3. **Start NF:**
+   - Click the **Start NF** button.
+
+4. **Wait for Stabilization:**
+   - The NF takes around 4–5 seconds to initialize and stabilize.
+   - Once ready, it will automatically attempt to communicate with other available NFs.
+
+![NF Start and Stabilized](./images/prd7.png)
+
+### Step 7: Repeat the Process for All NFs
+
+Follow Steps 6 for each NF in the topology.
+
+Once all NFs are:
+- Configured
+- Started
+- Stabilized
+
+...your manual 5G core setup becomes active and interconnected.
+
+![Manually Started Core Network](./images/prd8.png)
+
+---
+
+## Method 3: One-Click Core Deployment
+
+This method automatically deploys all Network Functions at once.
+
+### Step 8: Initiate One-Click Core Deployment
+
+1. Click the **Core Deploy** button.
+2. A deployment process begins automatically.
+3. The system may take some time to fully initialize depending on the number of NFs.
+
+### Step 9: Understand the Automated Deployment Steps
+
+The following steps are executed internally during one-click deployment:
 
 1. **Clearing Existing Topology**
-   - Removes all previously running NFs
-   - Resets the workspace to a clean state
-   - Clears residual configurations and connections
+   - Removes previously running NFs and resets the workspace.
 
 2. **Loading Core Configuration**
-   - Imports predefined NF settings and operational parameters
-   - Initializes configuration templates for all NFs
-   - Prepares the deployment environment
+   - Imports predefined NF settings and parameters.
 
 3. **Deploying Network Functions**
-   - Automatically launches all required NFs according to the topology
-   - Assigns IP addresses and port allocations
-   - Initializes each NF's communication stack
+   - Automatically launches all required NFs.
 
 4. **Establishing Internal Connections**
-   - Configures SBA service interfaces between NFs
-   - Establishes N1, N2, N3, N4, N6, N7, and N8 interfaces as required
-   - Validates inter-NF connectivity
+   - Ensures inter-NF communication using SBA interfaces.
 
 5. **Finalizing Deployment**
-   - Performs comprehensive stability checks
-   - Verifies all NF registrations
-   - Completes the 5G Core initialization
+   - Performs a stability check and completes the 5G Core initialization.
 
-![One-Click Core Deployment Process](./images/prd4.png)
+![One Click Core Deployment](./images/prd9.png)
 
-**Figure 4:** One-Click Core Deployment
+### Step 10: Verify Deployment Logs
 
-### Step 6: Verify Deployment Logs
+Scroll to the Logs Panel to observe system messages such as:
 
-Upon completion of deployment, verify the successful initialization by examining the Logs Panel:
+- "AMF started successfully"
+- "NRF registration completed"
+- "All NFs connected"
+- "Core deployment finalized"
 
-1. Scroll to the **Logs Panel** at the bottom of the dashboard interface.
-2. Observe system messages confirming successful deployment, such as:
-   - "AMF started successfully"
-   - "NRF registration completed"
-   - "All NFs connected"
-   - "Core deployment finalized"
-
-These log messages provide confirmation that the automated deployment process has completed successfully and all network functions are operational.
+These logs confirm successful automatic deployment.
 
 ---
 
 ## Troubleshooting & Validation
 
-### Step 7: Test Connectivity Between NFs Using Ping
+### Step 11: Test Connectivity Between NFs Using Ping
 
-Network connectivity validation is essential to ensure proper inter-NF communication and core network functionality. The built-in ping utility allows verification of NF reachability.
+You can confirm whether NFs are reachable using the built-in ping terminal.
 
-#### 7.1 Opening the NF Terminal
+#### 1. Open the NF Terminal
 
-1. Select the source network function from which you wish to conduct the connectivity test (e.g., AMF).
-2. Scroll to the bottom of the NF Configuration Panel.
-3. Click the **Open Command Prompt / Terminal** button to launch the NF terminal interface.
+1. Select the NF you want to test (e.g., AMF).
+2. Scroll down the configuration panel.
+3. Click **Open Command Prompt / Terminal**.
 
-#### 7.2 Performing the Ping Test
+#### 2. Perform Ping Test
 
-1. In the terminal input field, enter the ping command with the target NF's IP address:
-   ```
+1. In the terminal input field, enter the command:
+   ```bash
    ping <Target_NF_IP>
    ```
 
    **Example:**
-   ```
+   ```bash
    ping 192.168.1.21
    ```
 
-2. Click the **Send** button to execute the ping command.
+2. Click **Send** to execute the ping.
 
-![Ping Test for Connectivity Validation](./images/prd5.png)
+![Ping Test for Connectivity Validation](./images/prd10.png)
 
-**Figure 5:** Ping Test to Check Connectivity Between Core Network Functions
+#### 3. Analyze the Results
 
-#### 7.3 Analyzing Test Results
+A successful test will show:
 
-A successful connectivity test will display the following characteristics:
+- Continuous reply messages (e.g., "Reply from 192.168.1.16…")
+- 0% packet loss
+- Stable latency
 
-- **Continuous Reply Messages:** Each successful ping response displays "Reply from [IP Address]…" with response times
-- **Zero Packet Loss:** All transmitted packets are successfully received (0% packet loss)
-- **Stable Latency:** Response times remain consistent throughout the test
+This confirms that:
 
-**Successful Test Confirmation:**
-
-✓ Both NFs are active and responding  
-✓ The network path between NFs is functioning correctly  
-✓ Core network communication is stable and reliable
-
-This confirms that the inter-NF communication is properly established and the 5G Core network is fully operational.
-
----
+✓ Both NFs are active  
+✓ The network path is functioning  
+✓ Core communication is stable

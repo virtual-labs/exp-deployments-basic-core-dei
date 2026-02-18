@@ -15,9 +15,11 @@
         <!-- Top Toolbar -->
         <div class="toolbar">
             <div class="toolbar-left">
-                <h1>🌐 5G Service-Based Architecture Dashboard</h1>
+                <h1>🌐 Basic Core Network Dashboard</h1>
             </div>
             <div class="toolbar-right">
+                <!-- Main Docker Terminal (controls NFs by command) -->
+                <button id="btn-docker-terminal" class="btn btn-docker-terminal" title="Open Main Docker Terminal">🐳 Terminal</button>
                 <!-- Main action buttons -->
                 <button id="btn-add-nf" class="btn btn-primary">➕ Add NF</button>
                 <button id="btn-core-deploy" class="btn btn-success">🚀 Core Deploy</button>
@@ -168,6 +170,7 @@
     <script src="js/ping-manager.js"></script>
     <script src="js/log-engine.js"></script>
     <script src="js/canvas-renderer.js"></script>
+    <script src="js/docker.js"></script>
     <script src="js/ui-controller.js"></script>
     <script src="js/app.js"></script>
 </body>

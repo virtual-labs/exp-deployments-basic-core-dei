@@ -4,9 +4,9 @@ The 5G Core Network (5GC) marks a significant evolution in mobile network archit
 
 Cloud-native design principles (containerization, microservices, and orchestration) underpin the 5GC. These principles enable operators to deploy network functions as software instances that can scale dynamically, automate lifecycle operations, and improve resource utilization while reducing capital and operational expenditures.
 
-![5G Core Network Service-Based Architecture](images/Fig-1.png)
+<img src="images/fig-1.svg" alt="5G Core Network Service-Based Architecture" width="40%">
 
-**Fig. 1 — 5G Core Network: Service-Based Architecture**
+*Fig. 1 — 5G Core Network: Service-Based Architecture*
 
 </details>
 
@@ -35,9 +35,9 @@ Other essential control plane functions include:
 
 The UPF implements the user/data plane for 5GC: high-performance packet forwarding, traffic inspection, QoS enforcement, and usage reporting. UPFs may be deployed centrally or at the network edge (MEC) to meet different latency and throughput requirements.
 
-![5G Core Network Session Establishment Flow](images/Fig-2.png)
+<img src="images/fig-2.svg" alt="5G Core Network Session Establishment Flow" width="40%">
 
-**Fig. 2 — 5G Core Network: Session Establishment Flow**
+*Fig. 2 — 5G Core Network: Session Establishment Flow*
 
 </details>
 
@@ -58,9 +58,9 @@ The 5GC embraces SDN principles by separating control and user planes and by exp
 
 The SMF closely resembles an SDN controller for the user plane: it maintains session state and programs UPF forwarding rules to realize traffic steering and QoS.
 
-![SDN Architecture Mapping to 5G Core Network](images/Fig-3.png)
+<img src="images/fig-3.svg" alt="SDN Architecture Mapping to 5G Core Network" width="40%">
 
-**Fig. 3 — SDN Architecture Mapping to 5G Core Network**
+*Fig. 3 — SDN Architecture Mapping to 5G Core Network*
 
 </details>
 
@@ -84,9 +84,6 @@ Modern 5GC deployments combine SDN principles with cloud-native technologies (Do
 - UPFs can be deployed as containerized services and configured programmatically by the SMF.  
 - CNIs and SDN controllers provide overlay/underlay connectivity, network policies, and integration with physical infrastructure.
 
-![Integrated SDN-Based 5G Core Network with Container Orchestration](images/Fig-4.png)
-
-**Fig. 4 — Integrated SDN-Based 5G Core Network with Container Orchestration**
 
 </details>
 
@@ -109,7 +106,7 @@ Modern 5GC deployments combine SDN principles with cloud-native technologies (Do
 - Multi-vendor interoperability: standardized interfaces and container packaging reduce vendor lock-in.  
 - Resilience: Kubernetes self-healing, rolling updates, and distributed replicas improve availability.
 
-![Packet Flow in Containerized SDN-Based 5G Core Network](images/Fig-5.png)
+<img src="images/fig-4.svg" alt="Packet Flow in Containerized SDN-Based 5G Core Network" width="50%">
 
 **Fig. 5 — Packet Flow in a Containerized SDN-Based 5G Core Network**
 
@@ -133,9 +130,9 @@ Modern 5GC deployments combine SDN principles with cloud-native technologies (Do
 - State management: use StatefulSets or external data stores where persistent state is required.  
 - Security: secure images, runtime protections, network policies, and robust API authentication/authorization are required.
 
-![Benefits of Containerized SDN-Based 5G Core Network](images/FIg-6.png)
+<img src="images/fig-5.svg" alt="Benefits of Containerized SDN-Based 5G Core Network" width="40%">
 
-**Fig. 6 — Benefits of a Containerized SDN-Based 5G Core Network**
+*Fig. 6 — Benefits of a Containerized SDN-Based 5G Core Network*
 
 </details>
 
