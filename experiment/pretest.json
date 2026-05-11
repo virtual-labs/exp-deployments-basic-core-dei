@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "The 5G Core Network is based on which architectural model?",
+      "question": "Q1. The 5G Core Network is based on which architectural model?",
       "answers": {
         "a": "Circuit-Switched Architecture",
         "b": "Service-Based Architecture (SBA)",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which of the following is a Control Plane function in the 5G Core?",
+      "question": "Q2. Which of the following is a Control Plane function in the 5G Core?",
       "answers": {
         "a": "UPF",
         "b": "SMF",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the main responsibility of the Access and Mobility Management Function (AMF)?",
+      "question": "Q3. What is the main responsibility of the Access and Mobility Management Function (AMF)?",
       "answers": {
         "a": "Forwarding user data packets",
         "b": "Managing mobility and registration of devices",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which function in 5G Core handles authentication of users?",
+      "question": "Q4. Which function in 5G Core handles authentication of users?",
       "answers": {
         "a": "PCF",
         "b": "UDM",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the primary role of the User Plane Function (UPF)?",
+      "question": "Q5. What is the primary role of the User Plane Function (UPF)?",
       "answers": {
         "a": "Managing user mobility",
         "b": "Policy enforcement",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "The separation of Control Plane and User Plane in 5G Core is inspired by which technology concept?",
+      "question": "Q6. The separation of Control Plane and User Plane in 5G Core is inspired by which technology concept?",
       "answers": {
         "a": "IoT",
         "b": "Virtualization",
@@ -101,10 +101,10 @@
         "d": "Incorrect — AI aids automation but is not the origin of this concept."
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "In the context of Docker, what is a container image?",
+      "question": "Q7. In the context of Docker, what is a container image?",
       "answers": {
         "a": "A running instance of software",
         "b": "A template that contains the application and its dependencies",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which component of Kubernetes manages the cluster’s desired state?",
+      "question": "Q8. Which component of Kubernetes manages the cluster’s desired state?",
       "answers": {
         "a": "Kubelet",
         "b": "Scheduler",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does Kubernetes use to manage and maintain configuration data for containers?",
+      "question": "Q9. What does Kubernetes use to manage and maintain configuration data for containers?",
       "answers": {
         "a": "Pods",
         "b": "Secrets and ConfigMaps",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What enables communication and discovery between different 5G Core network functions?",
+      "question": "Q10. What enables communication and discovery between different 5G Core network functions?",
       "answers": {
         "a": "Service Mesh",
         "b": "NRF (Network Repository Function)",
@@ -172,7 +172,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which of the following is not a benefit of containerization in 5G Core deployment?",
+      "question": "Q11. Which of the following is not a benefit of containerization in 5G Core deployment?",
       "answers": {
         "a": "Isolation",
         "b": "Portability",
@@ -189,7 +189,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In Kubernetes, which component runs on each worker node to manage containers?",
+      "question": "Q12. In Kubernetes, which component runs on each worker node to manage containers?",
       "answers": {
         "a": "Kubelet",
         "b": "Controller",
@@ -206,7 +206,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Dynamic traffic steering in 5G Core is managed by which function?",
+      "question": "Q13. Dynamic traffic steering in 5G Core is managed by which function?",
       "answers": {
         "a": "SMF",
         "b": "AMF",
@@ -220,10 +220,10 @@
         "d": "Incorrect — AUSF handles authentication only."
       },
       "correctAnswer": "a",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "Which open-source technology is used for container orchestration in 5G Core?",
+      "question": "Q14. Which open-source technology is used for container orchestration in 5G Core?",
       "answers": {
         "a": "Docker",
         "b": "OpenStack",
@@ -240,7 +240,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is a key advantage of integrating SDN and containerization in 5G Core?",
+      "question": "Q15. What is a key advantage of integrating SDN and containerization in 5G Core?",
       "answers": {
         "a": "Increased manual configuration",
         "b": "Reduced automation",
@@ -254,7 +254,7 @@
         "d": "Incorrect — Scalability improves, not reduces."
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     }
   ]
 }

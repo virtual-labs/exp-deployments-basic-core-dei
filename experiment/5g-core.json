@@ -161,6 +161,66 @@
         "load": 0,
         "httpProtocol": "HTTP/2"
       }
+    },
+    {
+      "id": "upf-1762750310000-upf01",
+      "type": "UPF",
+      "name": "UPF-1",
+      "position": {
+        "x": 354,
+        "y": 420
+      },
+      "color": "#4caf50",
+      "icon": "simulation/images/icons/upf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750315000,
+      "config": {
+        "ipAddress": "192.168.1.40",
+        "port": 8080,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "extdn-1762750312000-dn01",
+      "type": "ext-dn",
+      "name": "ext-dn-1",
+      "position": {
+        "x": 354,
+        "y": 520
+      },
+      "color": "#00bcd4",
+      "icon": "simulation/images/icons/upf.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750312000,
+      "config": {
+        "ipAddress": "192.168.1.45",
+        "port": 80,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
+    },
+    {
+      "id": "mysql-1762750320000-db01",
+      "type": "MySQL",
+      "name": "MySQL-1",
+      "position": {
+        "x": 638,
+        "y": 420
+      },
+      "color": "#f44336",
+      "icon": "simulation/images/icons/mysql.svg",
+      "status": "stable",
+      "statusTimestamp": 1762750325000,
+      "config": {
+        "ipAddress": "192.168.1.100",
+        "port": 3306,
+        "capacity": 1000,
+        "load": 0,
+        "httpProtocol": "HTTP/2"
+      }
     }
   ],
   "connections": [
@@ -240,6 +300,39 @@
       "createdAt": 1762750308470,
       "isManual": false,
       "showVisual": false
+    },
+    {
+      "id": "conn-1762750330000-mysql1",
+      "sourceId": "mysql-1762750320000-db01",
+      "targetId": "udr-1762750298834-pfh14",
+      "interfaceName": "SQL/REST API",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750330000,
+      "isManual": false,
+      "showVisual": true
+    },
+    {
+      "id": "conn-1762750335000-upfsmf1",
+      "sourceId": "upf-1762750310000-upf01",
+      "targetId": "smf-1762750274710-bsru0",
+      "interfaceName": "N4",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750335000,
+      "isManual": false,
+      "showVisual": true
+    },
+    {
+      "id": "conn-1762750312000-extdnupf1",
+      "sourceId": "extdn-1762750312000-dn01",
+      "targetId": "upf-1762750310000-upf01",
+      "interfaceName": "N6",
+      "protocol": "HTTP/2",
+      "status": "connected",
+      "createdAt": 1762750312000,
+      "isManual": false,
+      "showVisual": true
     }
   ],
   "buses": [

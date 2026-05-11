@@ -23,8 +23,11 @@ class BusManager {
         // Wait for data store to be available
         setTimeout(() => {
             if (window.dataStore) {
-                console.log('🚌 Creating default bus line...');
-                this.createBusLine('horizontal', { x: 200, y: 300 }, 600, 'Service Bus');
+                // Only create if no bus exists yet
+                if (window.dataStore.getAllBuses().length === 0) {
+                    console.log('🚌 Creating default bus line...');
+                    this.createBusLine('horizontal', { x: 120, y: 153 }, 600, 'Service Bus');
+                }
             }
         }, 100);
     }

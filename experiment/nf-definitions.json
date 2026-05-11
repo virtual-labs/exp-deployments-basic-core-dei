@@ -210,5 +210,23 @@
       "REST API (toward UDM/UDR)"
     ],
     "type": "Database"
+  },
+  "ext-dn": {
+    "name": "External Data Network",
+    "description": "External data network (Internet/DN) providing connectivity to external services and applications",
+    "color": "#00bcd4",
+    "icon": "simulation/images/icons/upf.svg",
+    "functions": [
+      "Internet Gateway",
+      "External Service Access",
+      "Traffic Routing",
+      "DNS Services",
+      "Content Delivery"
+    ],
+    "interfaces": [
+      "N6 (toward UPF)",
+      "Internet/External Networks"
+    ],
+    "type": "DataNetwork"
   }
 }

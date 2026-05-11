@@ -215,13 +215,28 @@ class DataStore {
             this.connections = data.connections;
         }
 
-        // ADD THESE LINES
-        if (data.buses && Array.isArray(data.buses)) {
-            this.buses = data.buses;
+        // Always keep exactly one bus — reuse the existing one if present,
+        // otherwise import the first bus from the topology.
+        if (data.buses && Array.isArray(data.buses) && data.buses.length > 0) {
+            if (this.buses.length === 0) {
+                // No bus on canvas yet — import the topology bus
+                this.buses = [data.buses[0]];
+            }
+            // If a bus already exists, keep it and remap all bus connections to its ID
         }
 
         if (data.busConnections && Array.isArray(data.busConnections)) {
-            this.busConnections = data.busConnections;
+            const canvasBusId = this.buses.length > 0 ? this.buses[0].id : null;
+            if (canvasBusId && data.buses && data.buses.length > 0) {
+                const topologyBusId = data.buses[0].id;
+                // Remap any bus connection pointing at the topology bus to the canvas bus
+                this.busConnections = data.busConnections.map(bc => ({
+                    ...bc,
+                    busId: bc.busId === topologyBusId ? canvasBusId : bc.busId
+                }));
+            } else {
+                this.busConnections = data.busConnections;
+            }
         }
 
         this.notifyListeners('data-imported', data);

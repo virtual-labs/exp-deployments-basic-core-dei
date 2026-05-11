@@ -1,2 +1,9 @@
-1. Ma, L., Wen, X., Wang, L., Lu, Z., & Knopp, R. (2018). An SDN/NFV based framework for management and deployment of service based 5G core network. China Communications, 15(10), 86-98.
-2. Choudhari, C. S., Patil, R. A., & Saraf, S. (2022, September). Deployment of 5G core for 5G private networks. In 2022 International Conference on Industry 4.0 Technology (I4Tech) (pp. 1-6). IEEE.
+<div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt;">
+
+1. #### An SDN/NFV Based Framework for Management and Deployment of Service Based 5G Core Network
+https://mainlab.cs.ccu.edu.tw/presentation/pdf/(2018)An%20SDNNFV%20based%20framework%20for%20management%20and%20deployment%20of%20service%20based%205G%20Core%20Network.pdf
+
+2. #### Deployment of 5G Core for 5G Private Networks
+https://ieeexplore.ieee.org/abstract/document/9952900
+
+</div>

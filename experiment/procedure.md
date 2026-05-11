@@ -1,4 +1,4 @@
-## Step 1: Introduction to the 5G Service-Based Architecture (SBA) Dashboard
+## Introduction to the 5G Service-Based Architecture (SBA) Dashboard
 
 The 5G Service-Based Architecture Dashboard allows you to deploy, configure, and validate core network functions (NFs) in a simulated 5G Core environment.
 
@@ -10,46 +10,41 @@ You can deploy the 5G Core using either of the following methods:
 
 Each method is described in detail below.
 
----
 
 ## Method 1: Deploy Network Functions Using Terminal (Docker Compose)
 
 This method allows you to deploy all Network Functions at once using predefined Docker Compose configurations.
 
-### Step 2: Open the SBA Terminal
+### Step 1: Open the SBA Terminal
 
 1. Launch the SBA Dashboard.
 2. Click the **Terminal** button available in the dashboard interface.
 3. Ensure you are in the project root directory.
 
-![Network Function Selection](./images/prd1.png)
+<img src="images/prd1.png"  width="90%">
 
-### Step 3: Launch All Network Functions
+### Step 2: Launch All Network Functions
 
 Click on the terminal button to open the terminal then from the project root directory, execute the following command:
 
 ```bash
 docker compose -f docker-compose.yml up -d
 ```
-![Network Function Selection](./images/prd2.png)
+<img src="images/prd2.png"  width="90%">
+
 
 This confirms that all core NFs and supporting services are running successfully.
 
-### Step 4: Verify Docker Network Creation
+### Step 3: Verify Docker Network Creation
 
 List available Docker networks:
 
 ```bash
 docker network ls
 ```
-![Network Function Selection](./images/prd3.png)
-
 You should see the oaiworkshop network:
 
-```
-NETWORK ID     NAME          DRIVER    SCOPE
-5a7a4f1ebed2   oaiworkshop   bridge    local
-```
+<img src="images/prd3.png"  width="90%">
 
 ### Step 4: Inspect Network and NF IP Assignment
 
@@ -58,7 +53,7 @@ Inspect the OAI network to verify IP allocation:
 ```bash
 docker network inspect oaiworkshop
 ```
-![Network Function Selection](./images/prd4.png)
+<img src="images/prd4.png"  width="90%">
 
 This confirms successful NF deployment and network stabilization.
 
@@ -70,18 +65,16 @@ To stop and clean up all running containers and networks:
 docker compose -f docker-compose.yml down
 ```
 
----
-
-![Network Function Selection](./images/prd5.png)
+<img src="images/prd5.png"  width="90%">
 
 ## Method 2: Start NFs Manually (One by One)
 
-### Step 6: Select and Configure a Network Function (NF)
+### Step 1: Select and Configure a Network Function (NF)
 
 1. **Select an NF:**
    - Click any NF tile (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF) on the dashboard.
 
-![Network Function Selection](./images/prd6.png)
+<img src="images/prd6.png"  width="90%">
 
 2. **Enter Configuration Details:**
    - In the NF Configuration Panel:
@@ -96,9 +89,9 @@ docker compose -f docker-compose.yml down
    - The NF takes around 4–5 seconds to initialize and stabilize.
    - Once ready, it will automatically attempt to communicate with other available NFs.
 
-![NF Start and Stabilized](./images/prd7.png)
+<img src="images/prd7.png"  width="90%">
 
-### Step 7: Repeat the Process for All NFs
+### Step 2: Repeat the Process for All NFs
 
 Follow Steps 6 for each NF in the topology.
 
@@ -107,23 +100,21 @@ Once all NFs are:
 - Started
 - Stabilized
 
-...your manual 5G core setup becomes active and interconnected.
+your manual 5G core setup becomes active and interconnected.
 
-![Manually Started Core Network](./images/prd8.png)
-
----
+<img src="images/prd8.png"  width="90%">
 
 ## Method 3: One-Click Core Deployment
 
 This method automatically deploys all Network Functions at once.
 
-### Step 8: Initiate One-Click Core Deployment
+### Step 1: Initiate One-Click Core Deployment
 
 1. Click the **Core Deploy** button.
 2. A deployment process begins automatically.
 3. The system may take some time to fully initialize depending on the number of NFs.
 
-### Step 9: Understand the Automated Deployment Steps
+### Step 2: Understand the Automated Deployment Steps
 
 The following steps are executed internally during one-click deployment:
 
@@ -142,24 +133,22 @@ The following steps are executed internally during one-click deployment:
 5. **Finalizing Deployment**
    - Performs a stability check and completes the 5G Core initialization.
 
-![One Click Core Deployment](./images/prd9.png)
+<img src="images/prd9.png"  width="90%">
 
-### Step 10: Verify Deployment Logs
+### Step 3: Verify Deployment Logs
 
 Scroll to the Logs Panel to observe system messages such as:
 
-- "AMF started successfully"
-- "NRF registration completed"
-- "All NFs connected"
-- "Core deployment finalized"
+- AMF started successfully
+- NRF registration completed
+- All NFs connected
+- Core deployment finalized
 
 These logs confirm successful automatic deployment.
 
----
-
 ## Troubleshooting & Validation
 
-### Step 11: Test Connectivity Between NFs Using Ping
+### Step 4: Test Connectivity Between NFs Using Ping
 
 You can confirm whether NFs are reachable using the built-in ping terminal.
 
@@ -181,9 +170,9 @@ You can confirm whether NFs are reachable using the built-in ping terminal.
    ping 192.168.1.21
    ```
 
-2. Click **Send** to execute the ping.
+2. Click **Enter** to execute the ping.
 
-![Ping Test for Connectivity Validation](./images/prd10.png)
+<img src="images/prd10.png"  width="90%">
 
 #### 3. Analyze the Results
 
@@ -195,6 +184,6 @@ A successful test will show:
 
 This confirms that:
 
-✓ Both NFs are active  
-✓ The network path is functioning  
-✓ Core communication is stable
+- Both NFs are active  
+- The network path is functioning  
+- Core communication is stable
