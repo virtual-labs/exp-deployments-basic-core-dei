@@ -52,12 +52,12 @@ class ConnectionManager {
             'NSSF': ['NRF', 'AMF'],
 
             // UDR connections
-            'UDR': ['NRF', 'SMF'],
+            'UDR': ['NRF', 'SMF', 'MySQL'],
 
             // NEW CONNECTIONS
             'gNB': ['AMF', 'UPF', 'UE'],
             'UE': ['gNB', 'AMF'],
-            'MySQL': ['UDM']
+            'MySQL': ['UDM', 'UDR']
         };
     }
 
@@ -246,7 +246,9 @@ class ConnectionManager {
             'UE-gNB': 'Radio',
             'UE-AMF': 'N1',  // UE to AMF (reverse direction)
             'UDM-MySQL': 'SQL/REST API',
-            'MySQL-UDM': 'SQL/REST API'
+            'MySQL-UDM': 'SQL/REST API',
+            'UDR-MySQL': 'SQL/REST API',
+            'MySQL-UDR': 'SQL/REST API'
         };
 
         // Try forward direction

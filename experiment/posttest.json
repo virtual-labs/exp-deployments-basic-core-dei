@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "In the SBA dashboard, what is the purpose of the NF tile?",
+      "question": "Q1. In the SBA dashboard, what is the purpose of the NF tile?",
       "answers": {
         "a": "To view UE location",
         "b": "To select and configure a Network Function",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What information must be entered before starting an NF manually?",
+      "question": "Q2. What information must be entered before starting an NF manually?",
       "answers": {
         "a": "UE ID and tracking area",
         "b": "IP Address, Port Number, and Protocol",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "During manual deployment, how does the system indicate that an NF is ready?",
+      "question": "Q3. During manual deployment, how does the system indicate that an NF is ready?",
       "answers": {
         "a": "NF tile turns red",
         "b": "Dashboard freezes",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In one-click deployment, what is the first internal step performed by the system?",
+      "question": "Q4. In one-click deployment, what is the first internal step performed by the system?",
       "answers": {
         "a": "Deploying Network Functions",
         "b": "Establishing internal connections",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "During automated core deployment, which step ensures NF-to-NF connectivity?",
+      "question": "Q5. During automated core deployment, which step ensures NF-to-NF connectivity?",
       "answers": {
         "a": "Loading configurations",
         "b": "Establishing internal SBA connections",
@@ -84,10 +84,10 @@
         "d": "Incorrect — Port reassignment does not link NFs."
       },
       "correctAnswer": "b",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "What message typically confirms that the AMF has successfully launched in the logs panel?",
+      "question": "Q6. What message typically confirms that the AMF has successfully launched in the logs panel?",
       "answers": {
         "a": "AMF authentication failed",
         "b": "AMF started successfully",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Why is stabilization time (4–5 seconds) required after starting an NF?",
+      "question": "Q7. Why is stabilization time (4–5 seconds) required after starting an NF?",
       "answers": {
         "a": "To upgrade the protocol version",
         "b": "To allocate memory and initialize internal components",
@@ -118,10 +118,10 @@
         "d": "Incorrect — Authentication keys are not generated here."
       },
       "correctAnswer": "b",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "What does the “Core Deploy” button do in one-click deployment?",
+      "question": "Q8. What does the “Core Deploy” button do in one-click deployment?",
       "answers": {
         "a": "Manually requests NF IPs",
         "b": "Automatically launches and interconnects all NFs",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which panel is used to observe 'NRF registration completed' logs?",
+      "question": "Q9. Which panel is used to observe 'NRF registration completed' logs?",
       "answers": {
         "a": "Topology panel",
         "b": "Logs panel",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "After opening the NF terminal, which detail is displayed at the top?",
+      "question": "Q10. After opening the NF terminal, which detail is displayed at the top?",
       "answers": {
         "a": "UE location and TAC",
         "b": "NF name and IP address",
@@ -172,7 +172,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does a successful ping test between NFs indicate?",
+      "question": "Q11. What does a successful ping test between NFs indicate?",
       "answers": {
         "a": "Wrong configuration values",
         "b": "Stable inter-NF connectivity",
@@ -186,10 +186,10 @@
         "d": "Incorrect — PLMN IDs are unrelated to NF connectivity."
       },
       "correctAnswer": "b",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "Which result represents a perfect NF connectivity test?",
+      "question": "Q12. Which result represents a perfect NF connectivity test?",
       "answers": {
         "a": "Packet Loss: 10%",
         "b": "Time-out errors",
@@ -206,7 +206,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What action does the dashboard perform before launching all NFs in one-click mode?",
+      "question": "Q13. What action does the dashboard perform before launching all NFs in one-click mode?",
       "answers": {
         "a": "Manual routing",
         "b": "Clearing old or running NFs",
@@ -223,7 +223,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What happens when you start an NF without selecting a protocol?",
+      "question": "Q14. What happens when you start an NF without selecting a protocol?",
       "answers": {
         "a": "The NF starts anyway",
         "b": "The NF fails to initialize",
@@ -237,10 +237,10 @@
         "d": "Incorrect — Logs remain open regardless of protocol selection."
       },
       "correctAnswer": "b",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     },
     {
-      "question": "Which NF action cannot be performed during stabilization time?",
+      "question": "Q15. Which NF action cannot be performed during stabilization time?",
       "answers": {
         "a": "Viewing logs",
         "b": "Editing IP address",

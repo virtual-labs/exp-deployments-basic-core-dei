@@ -664,8 +664,8 @@ class UIController {
                             protocol: conn.protocol,
                             status: conn.status,
                             createdAt: Date.now(),
-                            isManual: false,
-                            showVisual: false
+                            isManual: conn.isManual || false,
+                            showVisual: conn.showVisual || false
                         };
                         
                         window.dataStore.addConnection(connection);
@@ -1797,6 +1797,8 @@ class UIController {
 
         console.log('✅ Topology cleared');
         alert('Topology cleared successfully!');
+        // Full refresh ensures complete re-initialization of all managers and UI state
+        window.location.reload();
     }
 
     /**
@@ -2069,14 +2071,11 @@ class UIController {
             <button class="btn btn-primary btn-block" id="btn-save-config">Save Changes</button>
             <button class="btn btn-danger btn-block" id="btn-delete-nf">Delete NF</button>
             
-            <div class="troubleshoot-section">
-                <h4>🔧 Troubleshoot</h4>
-                <p class="config-hint">Open Windows-style terminal for network diagnostics</p>
-                
-                <button class="btn btn-terminal btn-block" id="btn-open-terminal">
-                    💻 Open Command Prompt
-                </button>
-            </div>
+        
+            <button class="btn btn-terminal btn-block" id="btn-open-terminal">
+                💻 Open Command Prompt
+            </button>
+            
         `;
 
         // Protocol change event listener
@@ -2938,18 +2937,16 @@ class UIController {
                         Command Prompt - ${nf.name} (${nf.config.ipAddress})
                     </div>
                     <div class="terminal-controls">
-                        <button class="terminal-btn minimize">−</button>
-                        <button class="terminal-btn maximize">□</button>
                         <button class="terminal-btn close" id="terminal-close">×</button>
                     </div>
                 </div>
                 <div class="windows-terminal-content" id="terminal-content">
-                    <div class="terminal-header">
-                        Microsoft Windows [Version 10.0.19045.3570]<br>
-                        (c) Microsoft Corporation. All rights reserved.<br><br>
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="terminal-line terminal-info">5G WIRELESS LAB</div>
+                        <div class="terminal-line terminal-info">Type "help" for available commands.</div>
+                        <div class="terminal-line terminal-blank">&nbsp;</div>
                     </div>
-                    <div class="terminal-output" id="terminal-output"></div>
-                    <div class="terminal-input-line">
+                    <div class="terminal-input-wrapper" id="terminal-input-wrapper">
                         <span class="terminal-prompt">C:\\${nf.name}></span>
                         <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false">
                     </div>
@@ -2982,6 +2979,7 @@ class UIController {
     setupWindowsTerminal(nf, terminalModal) {
         const input = document.getElementById('terminal-input');
         const output = document.getElementById('terminal-output');
+        const content = document.getElementById('terminal-content');
         const closeBtn = document.getElementById('terminal-close');
         
         let commandHistory = [];
@@ -3011,7 +3009,7 @@ class UIController {
                     commandHistory.push(command);
                     historyIndex = commandHistory.length;
 
-                    // Display command
+                    // Display command inline (like real terminal)
                     this.addTerminalLine(output, `C:\\${nf.name}>${command}`, 'command');
                     
                     // Clear input
@@ -3019,6 +3017,13 @@ class UIController {
 
                     // Process command
                     await this.processWindowsCommand(nf, command, output);
+                    
+                    // Scroll to bottom
+                    this.scrollTerminalToBottom(content);
+                } else {
+                    // Empty enter — just print a blank prompt line
+                    this.addTerminalLine(output, `C:\\${nf.name}>`, 'command');
+                    this.scrollTerminalToBottom(content);
                 }
             } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
@@ -3035,13 +3040,81 @@ class UIController {
                     historyIndex = commandHistory.length;
                     input.value = '';
                 }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                this.handleWindowsTabCompletion(input, nf);
+            } else if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                output.innerHTML = '';
+            } else {
+                this._nfTabState = null;
             }
         });
 
-        // Initial welcome message
-        this.addTerminalLine(output, `Connected to ${nf.name} (${nf.config.ipAddress})`, 'info');
-        this.addTerminalLine(output, 'Type "help" for available commands.', 'info');
-        this.addTerminalLine(output, '', 'blank');
+        // Focus input on any click in terminal
+        if (content) {
+            content.addEventListener('click', (e) => {
+                if (e.target !== input) {
+                    input.focus();
+                }
+            });
+        }
+    }
+
+    scrollTerminalToBottom(element) {
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
+    }
+
+    handleWindowsTabCompletion(input, nf) {
+        const commandTokens = [
+            ['help'],
+            ['ifconfig'],
+            ['ping'],
+            ['ping', 'gateway'],
+            ['ping', 'subnet'],
+            ['systeminfo'],
+            ['netstat'],
+            ['cls'],
+            ['clear'],
+            ['exit']
+        ];
+
+        const raw = input.value;
+        const trailingSpace = raw.endsWith(' ');
+        const tokens = raw.trimStart().split(/\s+/).filter(Boolean);
+        const wordIndex = trailingSpace ? tokens.length : tokens.length - 1;
+        const prefix = trailingSpace ? '' : (tokens[wordIndex] || '').toLowerCase();
+        const before = trailingSpace ? tokens : tokens.slice(0, wordIndex);
+
+        // Cycle if tab pressed again on same input
+        if (this._nfTabState && this._nfTabState.base === raw) {
+            this._nfTabState.index = (this._nfTabState.index + 1) % this._nfTabState.candidates.length;
+            const next = this._nfTabState.candidates[this._nfTabState.index];
+            input.value = [...before, next].join(' ');
+            this._nfTabState.base = input.value;
+            return;
+        }
+
+        // Fresh tab — find candidates for current word
+        const candidates = commandTokens
+            .filter(cmd => {
+                if (cmd.length <= wordIndex) return false;
+                for (let i = 0; i < before.length; i++) {
+                    if ((cmd[i] || '').toLowerCase() !== before[i].toLowerCase()) return false;
+                }
+                return cmd[wordIndex].toLowerCase().startsWith(prefix);
+            })
+            .map(cmd => cmd[wordIndex]);
+
+        const unique = [...new Set(candidates)];
+        if (unique.length === 0) return;
+
+        input.value = [...before, unique[0]].join(' ');
+        this._nfTabState = unique.length > 1
+            ? { base: input.value, candidates: unique, index: 0 }
+            : null;
     }
 
     /**
@@ -3056,8 +3129,8 @@ class UIController {
 
         if (cmd === 'help' || cmd === '?') {
             this.showWindowsHelp(output);
-        } else if (cmd === 'ipconfig') {
-            this.showIPConfig(nf, output);
+        } else if (cmd === 'ifconfig') {
+            this.showifconfig(nf, output);
         } else if (cmd.startsWith('ping ')) {
             const target = args[1];
             if (target === 'gateway') {
@@ -3078,8 +3151,6 @@ class UIController {
         } else if (cmd === 'exit') {
             const closeBtn = document.getElementById('terminal-close');
             if (closeBtn) closeBtn.click();
-        } else if (cmd === 'dir') {
-            this.showDirectory(output);
         } else if (cmd === 'systeminfo') {
             this.showSystemInfo(nf, output);
         } else if (cmd === 'netstat') {
@@ -3119,13 +3190,12 @@ class UIController {
             'Available commands:',
             '',
             'HELP           - Display this help message',
-            'IPCONFIG       - Display network configuration',
+            'ifconfig       - Display network configuration',
             'PING <ip>      - Test connectivity to specific IP',
             'PING GATEWAY   - Test connectivity to default gateway',
             'PING SUBNET    - Discover and show all running IPs in subnet',
             'SYSTEMINFO     - Display system information',
             'NETSTAT        - Display network connections',
-            'DIR            - List directory contents',
             'CLS            - Clear the screen',
             'EXIT           - Close this terminal',
             '',
@@ -3146,7 +3216,7 @@ class UIController {
      * @param {Object} nf - Network Function
      * @param {HTMLElement} output - Output element
      */
-    showIPConfig(nf, output) {
+    showifconfig(nf, output) {
         const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
         const gatewayIP = `${sourceNetwork}.1`;
         
@@ -3160,13 +3230,6 @@ class UIController {
             `   Subnet Mask . . . . . . . . . . . : 255.255.255.0`,
             `   Default Gateway . . . . . . . . . : ${gatewayIP}`,
             `   DNS Servers . . . . . . . . . . . : 8.8.8.8`,
-            `                                       8.8.4.4`,
-            `   DHCP Enabled. . . . . . . . . . . : No`,
-            `   Autoconfiguration Enabled . . . . : Yes`,
-            `   Network Function Type . . . . . . : ${nf.type}`,
-            `   Service Status. . . . . . . . . . : ${nf.status.toUpperCase()}`,
-            `   HTTP Protocol . . . . . . . . . . : ${nf.config.httpProtocol}`,
-            `   Service Port. . . . . . . . . . . : ${nf.config.port}`,
             ''
         ];
 

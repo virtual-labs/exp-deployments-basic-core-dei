@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5G SBA Network Dashboard</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=4">
 </head>
 
 <body>
@@ -18,11 +18,11 @@
                 <h1>🌐 Basic Core Network Dashboard</h1>
             </div>
             <div class="toolbar-right">
+                <button id="btn-core-deploy" class="btn btn-success">🚀 Core Deploy</button>
                 <!-- Main Docker Terminal (controls NFs by command) -->
                 <button id="btn-docker-terminal" class="btn btn-docker-terminal" title="Open Main Docker Terminal">🐳 Terminal</button>
                 <!-- Main action buttons -->
                 <button id="btn-add-nf" class="btn btn-primary">➕ Add NF</button>
-                <button id="btn-core-deploy" class="btn btn-success">🚀 Core Deploy</button>
                 <button id="btn-clear" class="btn btn-danger">🗑️ Clears</button>
                 <button id="btn-validate" class="btn btn-info">✓ Validate</button>
                 <button id="btn-help" class="btn btn-secondary">❓ Help</button>
@@ -126,36 +126,42 @@
             <h2>📚 5G Service-Based Architecture Guide</h2>
             <div class="help-content">
                 <div class="help-section">
-                    <h3>🏗️ Reference Architecture</h3>
-                    <div class="architecture-diagram">
-                        <img id="sba-diagram" src="images/sba/sba.jpg" alt="5G Service-Based Architecture"
-                            style="width: 100%; max-width: 800px; height: auto; background: #1a252f; border-radius: 8px;">
-                    </div>
-                </div>
-
-                <div class="help-section">
-                    <h3>🚀 Quick Start Guide</h3>
+                    <h3>🐳 Method 1: Terminal Deployment</h3>
                     <ol class="help-steps">
-                        <li><strong>Create Service Buses:</strong> Click "📊 Add Bus Line" to create Control Plane and
-                            User Plane buses</li>
-                        <li><strong>Add Network Functions:</strong> Click "➕ Add NF" to add AMF, SMF, UPF, etc.</li>
-                        <li><strong>Connect Components:</strong> Use "Select Source" → "Select Destination" to connect
-                            NFs to buses</li>
-                        <li><strong>Validate Topology:</strong> Click "✓ Validate" to check your 5G network design</li>
+                        <li>Open the SBA Dashboard and click the <strong>Terminal</strong> button.</li>
+                        <li>Run <code>docker compose -f docker-compose.yml up -d</code> to deploy all NFs.</li>
+                        <li>Verify network creation using <code>docker network ls</code>.</li>
+                        <li>Check NF IP allocation using <code>docker network inspect oaiworkshop</code>.</li>
+                        <li>Stop all NFs using <code>docker compose -f docker-compose.yml down</code>.</li>
                     </ol>
                 </div>
-
                 <div class="help-section">
-                    <h3>🔗 Connection Types</h3>
-                    <ul class="help-list">
-                        <li><span class="connection-type nf-bus">NF → Bus:</span> Connect Network Functions to Service
-                            Buses</li>
-                        <li><span class="connection-type bus-nf">Bus → NF:</span> Connect Service Buses to Network
-                            Functions</li>
-                        <li><span class="connection-type bus-bus">Bus → Bus:</span> Create bridges between different
-                            service buses</li>
-                        <li><span class="connection-type nf-nf">NF → NF:</span> Direct point-to-point connections</li>
-                    </ul>
+                    <h3>🖱️ Method 2: Manual NF Configuration</h3>
+                    <ol class="help-steps">
+                        <li>Select an NF from the dashboard to configure manually.</li>
+                        <li>Enter IP, port, and protocol, then click <strong>Start NF</strong>.</li>
+                        <li>Wait a few seconds for the NF to stabilize and connect.</li>
+                        <li>Repeat the process to start all required NFs.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h3>🚀 Method 3: One-Click Core Deploy</h3>
+                    <ol class="help-steps">
+                        <li>Use <strong>Core Deploy</strong> button for one-click deployment of all NFs.</li>
+                        <li>Check logs to confirm all NFs are started and connected.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h3>📡 Connectivity Test</h3>
+                    <ol class="help-steps">
+                        <li>Open an NF terminal and run <code>ping &lt;Target_NF_IP&gt;</code> to test connectivity.</li>
+                        <li>Ensure replies with 0% packet loss to confirm stable communication.</li>
+                    </ol>
+                </div>
+                <div class="help-section" style="margin-top:16px; padding:12px; background:#1a252f; border-radius:8px; text-align:center;">
+                    <a>For More Detailes</a><a href="../procedure.html" target="_blank" style="color:#4fc3f7; font-size:15px; text-decoration:none;">
+                        📄 View Full Procedures 
+                    </a>
                 </div>
             </div>
             <button id="help-close" class="btn btn-primary btn-block">Close</button>
@@ -163,16 +169,16 @@
     </div>
 
     <!-- Load all JavaScript files in correct order -->
-    <script src="js/data-store.js"></script>
-    <script src="js/nf-manager.js"></script>
-    <script src="js/connection-manager.js"></script>
-    <script src="js/bus-manager.js"></script>
-    <script src="js/ping-manager.js"></script>
-    <script src="js/log-engine.js"></script>
-    <script src="js/canvas-renderer.js"></script>
-    <script src="js/docker.js"></script>
-    <script src="js/ui-controller.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/data-store.js?v=4"></script>
+    <script src="js/nf-manager.js?v=4"></script>
+    <script src="js/connection-manager.js?v=4"></script>
+    <script src="js/bus-manager.js?v=4"></script>
+    <script src="js/ping-manager.js?v=4"></script>
+    <script src="js/log-engine.js?v=4"></script>
+    <script src="js/canvas-renderer.js?v=4"></script>
+    <script src="js/docker.js?v=4"></script>
+    <script src="js/ui-controller.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
 </body>
 
 </html>
