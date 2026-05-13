@@ -23,6 +23,8 @@ This method allows you to deploy all Network Functions at once using predefined 
 
 <img src="images/prd1.png"  width="90%">
 
+*Fig: SBA dashboard terminal button and interface.*
+
 ### Step 2: Launch All Network Functions
 
 Click on the terminal button to open the terminal then from the project root directory, execute the following command:
@@ -31,6 +33,8 @@ Click on the terminal button to open the terminal then from the project root dir
 docker compose -f docker-compose.yml up -d
 ```
 <img src="images/prd2.png"  width="90%">
+
+*Fig: Terminal output showing core network deployment with docker compose.*
 
 
 This confirms that all core NFs and supporting services are running successfully.
@@ -46,6 +50,8 @@ You should see the oaiworkshop network:
 
 <img src="images/prd3.png"  width="90%">
 
+*Fig: Docker network list showing oaiworkshop network.*
+
 ### Step 4: Inspect Network and NF IP Assignment
 
 Inspect the OAI network to verify IP allocation:
@@ -54,6 +60,8 @@ Inspect the OAI network to verify IP allocation:
 docker network inspect oaiworkshop
 ```
 <img src="images/prd4.png"  width="90%">
+
+*Fig: Docker network inspect output for IP assignment verification.*
 
 This confirms successful NF deployment and network stabilization.
 
@@ -67,6 +75,8 @@ docker compose -f docker-compose.yml down
 
 <img src="images/prd5.png"  width="90%">
 
+*Fig: Docker compose down cleanup of core network containers.*
+
 ## Method 2: Start NFs Manually (One by One)
 
 ### Step 1: Select and Configure a Network Function (NF)
@@ -75,6 +85,8 @@ docker compose -f docker-compose.yml down
    - Click any NF tile (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF) on the dashboard.
 
 <img src="images/prd6.png"  width="90%">
+
+*Fig: NF selection and configuration interface on the dashboard.*
 
 2. **Enter Configuration Details:**
    - In the NF Configuration Panel:
@@ -91,6 +103,8 @@ docker compose -f docker-compose.yml down
 
 <img src="images/prd7.png"  width="90%">
 
+*Fig: NF initialization and configuration progress status.*
+
 ### Step 2: Repeat the Process for All NFs
 
 Follow Steps 6 for each NF in the topology.
@@ -103,6 +117,8 @@ Once all NFs are:
 your manual 5G core setup becomes active and interconnected.
 
 <img src="images/prd8.png"  width="90%">
+
+*Fig: Manual NF deployment completion and topology status.*
 
 ## Method 3: One-Click Core Deployment
 
@@ -134,6 +150,8 @@ The following steps are executed internally during one-click deployment:
    - Performs a stability check and completes the 5G Core initialization.
 
 <img src="images/prd9.png"  width="90%">
+
+*Fig: One-click core deployment progress in the dashboard.*
 
 ### Step 3: Verify Deployment Logs
 
@@ -173,6 +191,8 @@ You can confirm whether NFs are reachable using the built-in ping terminal.
 2. Click **Enter** to execute the ping.
 
 <img src="images/prd10.png"  width="90%">
+
+*Fig: Ping test terminal verifying NF connectivity.*
 
 #### 3. Analyze the Results
 
