@@ -59,7 +59,7 @@ class UIController {
         const palette = document.querySelector('.nf-palette');
         if (!palette) return;
 
-        const nfTypes = ['NRF', 'AMF', 'SMF', 'AUSF', 'UDM', 'PCF', 'NSSF', 'UDR'];
+        const nfTypes = ['NRF', 'AMF', 'SMF', 'UPF', 'AUSF', 'UDM', 'PCF', 'NSSF', 'UDR'];
 
         nfTypes.forEach(type => {
             const nfDef = window.nfDefinitions?.[type] || {
@@ -135,7 +135,7 @@ class UIController {
         if (!modal || !nfGrid) return;
 
         // Create NF selection buttons
-        const nfTypes = ['NRF', 'AMF', 'SMF', 'AUSF', 'UDM', 'PCF', 'NSSF', 'UDR'];
+        const nfTypes = ['NRF', 'AMF', 'SMF', 'UPF', 'AUSF', 'UDM', 'PCF', 'NSSF', 'UDR'];
 
         nfGrid.innerHTML = '';
 
