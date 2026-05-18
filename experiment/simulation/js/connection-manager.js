@@ -37,7 +37,7 @@ class ConnectionManager {
             'SMF': ['NRF', 'AMF', 'UPF', 'PCF', 'UDM', 'UDR'],
 
             // UPF connections
-            'UPF': ['NRF', 'SMF', 'gNB'],
+            'UPF': ['NRF', 'SMF', 'gNB', 'ext-dn'],
 
             // AUSF connections
             'AUSF': ['NRF', 'AMF', 'UDM'],
@@ -57,7 +57,8 @@ class ConnectionManager {
             // NEW CONNECTIONS
             'gNB': ['AMF', 'UPF', 'UE'],
             'UE': ['gNB', 'AMF'],
-            'MySQL': ['UDM', 'UDR']
+            'MySQL': ['UDM', 'UDR'],
+            'ext-dn': ['UPF']
         };
     }
 
@@ -248,7 +249,9 @@ class ConnectionManager {
             'UDM-MySQL': 'SQL/REST API',
             'MySQL-UDM': 'SQL/REST API',
             'UDR-MySQL': 'SQL/REST API',
-            'MySQL-UDR': 'SQL/REST API'
+            'MySQL-UDR': 'SQL/REST API',
+            'UPF-ext-dn': 'N6',
+            'ext-dn-UPF': 'N6'
         };
 
         // Try forward direction

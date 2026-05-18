@@ -1811,6 +1811,16 @@ button:disabled {
     min-width: 0;
 }
 
+.terminal-input:disabled {
+    color: #666666;
+    cursor: not-allowed;
+}
+
+.terminal-input:disabled::placeholder {
+    color: #888888;
+    font-style: italic;
+}
+
 .terminal-input::selection {
     background: #ecedee;
     color: #ffffff;
