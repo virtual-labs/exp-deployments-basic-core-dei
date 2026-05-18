@@ -27,7 +27,7 @@ The UPF implements the user/data plane for 5GC: high-performance packet forwardi
 
 ### 3.1 How SDN Concepts Map to 5GC
 
-The 5GC embraces SDN principles by separating control and user planes and by exposing programmable interfaces to dynamically configure forwarding behavior. Key mappings:
+The 5GC embraces SDN principles by separating control and user planes and by exposing programmable interfaces to dynamically configure forwarding behaviour. Key mappings:
 
 <ol type="a"> <li><b>SDN Application Layer</b> ↔ OSS/BSS and network applications that request services and analytics from the core.</li> <li><b>SDN Control Layer (controller)</b> ↔ 5GC control-plane functions (AMF, SMF, PCF) that make global decisions and push policies.</li> <li><b>SDN Infrastructure Layer</b> ↔ UPF and RAN elements that execute forwarding rules and enforce QoS.</li> </ol>
 

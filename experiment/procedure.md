@@ -82,7 +82,7 @@ docker compose -f docker-compose.yml down
 ### Step 1: Select and Configure a Network Function (NF)
 
 1. **Select an NF:**
-   - Click any NF tile (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF) on the dashboard.
+   - Click any NF type (e.g., AMF, SMF, UPF, NRF, AUSF, UDM, PCF, etc.) on the dashboard.
 
 <img src="images/prd6.png"  width="90%">
 

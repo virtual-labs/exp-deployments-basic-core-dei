@@ -27,7 +27,8 @@ class NFManager {
             'UDR': 0,
             'gNB': 0,
             'UE': 0,
-            'MySQL': 0
+            'MySQL': 0,
+            'ext-dn': 0
         };
 
         console.log('✅ NFManager initialized');
@@ -421,7 +422,8 @@ class NFManager {
             'UDR': { color: '#009688', icon: null, name: 'Unified Data Repository' },
             'gNB': { color: '#8e44ad', icon: null, name: 'gNodeB (5G Base Station)' },
             'UE': { color: '#16a085', icon: null, name: 'User Equipment' },
-            'MySQL': { color: '#d35400', icon: null, name: 'MySQL Database' }
+            'MySQL': { color: '#d35400', icon: null, name: 'MySQL Database' },
+            'ext-dn': { color: '#00bcd4', icon: null, name: 'External Data Network' }
         };
 
         return defaultDefs[type] || { color: '#95a5a6', icon: null, name: type };
@@ -749,15 +751,16 @@ class NFManager {
         return {
             'AMF': ['NRF', 'AUSF', 'UDM'],
             'SMF': ['NRF', 'UPF', 'PCF'],
-            'UPF': ['SMF'],
+            'UPF': ['SMF', 'ext-dn'],
             'AUSF': ['NRF', 'UDM'],
-            'UDM': ['NRF'],
+            'UDM': ['NRF', 'MySQL'],
             'PCF': ['NRF'],
             'NSSF': ['NRF'],
-            'UDR': ['NRF'],
+            'UDR': ['NRF', 'MySQL'],
             'gNB': ['AMF', 'UPF'],
             'UE': ['gNB'],
-            'MySQL': ['UDM']
+            'MySQL': ['UDM', 'UDR'],
+            'ext-dn': ['UPF']
         };
     }
 

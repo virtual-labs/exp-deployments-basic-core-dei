@@ -2208,6 +2208,9 @@ class UIController {
                 // Auto-connect to bus if applicable
                 this.autoConnectToBusIfApplicable(nf);
 
+                // Auto-deploy dependencies based on NF type
+                this.autoDeployDependencies(nf);
+
                 // Clear configuration panel
                 this.hideNFConfigPanel();
 
@@ -2291,6 +2294,260 @@ class UIController {
                 }
             }
         }
+    }
+
+    /**
+     * Auto-deploy dependencies for specific NF types
+     * - UDR deployment triggers MySQL auto-deployment and auto-connection
+     * - UPF deployment triggers EXT-DN auto-deployment and auto-connection
+     * @param {Object} nf - Network Function that was just deployed
+     */
+    autoDeployDependencies(nf) {
+        console.log(`🔍 Checking auto-deploy dependencies for ${nf.name} (${nf.type})`);
+
+        // UDR requires MySQL
+        if (nf.type === 'UDR') {
+            this.autoDeployMySQL(nf);
+        }
+
+        // UPF requires EXT-DN
+        if (nf.type === 'UPF') {
+            this.autoDeployExtDN(nf);
+        }
+    }
+
+    /**
+     * Auto-deploy MySQL database when UDR is deployed
+     * @param {Object} udrNF - UDR Network Function
+     */
+    autoDeployMySQL(udrNF) {
+        console.log(`🔍 Checking if MySQL needs to be auto-deployed for ${udrNF.name}`);
+
+        // Check if MySQL already exists
+        const allNFs = window.dataStore?.getAllNFs() || [];
+        const existingMySQL = allNFs.find(nf => nf.type === 'MySQL');
+
+        if (existingMySQL) {
+            console.log(`ℹ️ MySQL already exists: ${existingMySQL.name}`);
+            
+            // Auto-connect UDR to existing MySQL if not already connected
+            this.autoConnectNFs(udrNF, existingMySQL, 'UDR → MySQL');
+            return;
+        }
+
+        // Auto-deploy MySQL in the same subnet as UDR
+        console.log(`🚀 Auto-deploying MySQL for ${udrNF.name}`);
+
+        const sourceNetwork = window.nfManager?.getNetworkFromIP(udrNF.config.ipAddress);
+        const mysqlIP = this.getNextAvailableIPInSubnet(sourceNetwork);
+        const mysqlPort = this.getNextAvailablePort();
+
+        // Calculate position near UDR
+        const mysqlPosition = {
+            x: udrNF.position.x + 120,
+            y: udrNF.position.y
+        };
+
+        // Create MySQL NF
+        if (window.nfManager) {
+            const mysqlNF = window.nfManager.createNetworkFunction('MySQL', mysqlPosition);
+
+            if (mysqlNF) {
+                // Override with same subnet configuration
+                mysqlNF.config.ipAddress = mysqlIP;
+                mysqlNF.config.port = mysqlPort;
+                mysqlNF.config.httpProtocol = udrNF.config.httpProtocol;
+
+                // Update in data store
+                window.dataStore.updateNF(mysqlNF.id, mysqlNF);
+
+                console.log(`✅ MySQL auto-deployed: ${mysqlNF.name} (${mysqlIP}:${mysqlPort})`);
+
+                // Log auto-deployment
+                if (window.logEngine) {
+                    window.logEngine.addLog(mysqlNF.id, 'SUCCESS',
+                        `MySQL auto-deployed for ${udrNF.name}`, {
+                        reason: 'UDR requires MySQL database',
+                        ipAddress: mysqlIP,
+                        port: mysqlPort,
+                        subnet: sourceNetwork + '.0/24',
+                        autoDeployed: true,
+                        triggeredBy: udrNF.name
+                    });
+                }
+
+                // Wait for MySQL to become stable, then auto-connect
+                setTimeout(() => {
+                    this.autoConnectNFs(udrNF, mysqlNF, 'UDR → MySQL');
+                }, 5500); // Wait for MySQL to become stable (5 seconds + buffer)
+
+                // Re-render canvas
+                if (window.canvasRenderer) {
+                    window.canvasRenderer.render();
+                }
+            }
+        }
+    }
+
+    /**
+     * Auto-deploy External Data Network when UPF is deployed
+     * @param {Object} upfNF - UPF Network Function
+     */
+    autoDeployExtDN(upfNF) {
+        console.log(`🔍 Checking if EXT-DN needs to be auto-deployed for ${upfNF.name}`);
+
+        // Check if EXT-DN already exists
+        const allNFs = window.dataStore?.getAllNFs() || [];
+        const existingExtDN = allNFs.find(nf => nf.type === 'ext-dn');
+
+        if (existingExtDN) {
+            console.log(`ℹ️ EXT-DN already exists: ${existingExtDN.name}`);
+            
+            // Auto-connect UPF to existing EXT-DN if not already connected
+            this.autoConnectNFs(upfNF, existingExtDN, 'UPF → EXT-DN');
+            return;
+        }
+
+        // Auto-deploy EXT-DN in the same subnet as UPF
+        console.log(`🚀 Auto-deploying EXT-DN for ${upfNF.name}`);
+
+        const sourceNetwork = window.nfManager?.getNetworkFromIP(upfNF.config.ipAddress);
+        const extDnIP = this.getNextAvailableIPInSubnet(sourceNetwork);
+        const extDnPort = this.getNextAvailablePort();
+
+        // Calculate position near UPF
+        const extDnPosition = {
+            x: upfNF.position.x + 120,
+            y: upfNF.position.y
+        };
+
+        // Create EXT-DN NF
+        if (window.nfManager) {
+            const extDnNF = window.nfManager.createNetworkFunction('ext-dn', extDnPosition);
+
+            if (extDnNF) {
+                // Override with same subnet configuration
+                extDnNF.config.ipAddress = extDnIP;
+                extDnNF.config.port = extDnPort;
+                extDnNF.config.httpProtocol = upfNF.config.httpProtocol;
+
+                // Update in data store
+                window.dataStore.updateNF(extDnNF.id, extDnNF);
+
+                console.log(`✅ EXT-DN auto-deployed: ${extDnNF.name} (${extDnIP}:${extDnPort})`);
+
+                // Log auto-deployment
+                if (window.logEngine) {
+                    window.logEngine.addLog(extDnNF.id, 'SUCCESS',
+                        `EXT-DN auto-deployed for ${upfNF.name}`, {
+                        reason: 'UPF requires External Data Network',
+                        ipAddress: extDnIP,
+                        port: extDnPort,
+                        subnet: sourceNetwork + '.0/24',
+                        autoDeployed: true,
+                        triggeredBy: upfNF.name
+                    });
+                }
+
+                // Wait for EXT-DN to become stable, then auto-connect
+                setTimeout(() => {
+                    this.autoConnectNFs(upfNF, extDnNF, 'UPF → EXT-DN');
+                }, 5500); // Wait for EXT-DN to become stable (5 seconds + buffer)
+
+                // Re-render canvas
+                if (window.canvasRenderer) {
+                    window.canvasRenderer.render();
+                }
+            }
+        }
+    }
+
+    /**
+     * Auto-connect two NFs if they are in the same subnet and not already connected
+     * @param {Object} sourceNF - Source Network Function
+     * @param {Object} targetNF - Target Network Function
+     * @param {string} description - Connection description for logging
+     */
+    autoConnectNFs(sourceNF, targetNF, description) {
+        // Check if both NFs are stable
+        if (sourceNF.status !== 'stable' || targetNF.status !== 'stable') {
+            console.log(`⏳ Waiting for both NFs to become stable before connecting`);
+            return;
+        }
+
+        // Check if they are in the same subnet
+        const sourceNetwork = window.nfManager?.getNetworkFromIP(sourceNF.config.ipAddress);
+        const targetNetwork = window.nfManager?.getNetworkFromIP(targetNF.config.ipAddress);
+
+        if (sourceNetwork !== targetNetwork) {
+            console.warn(`⚠️ Cannot auto-connect: ${sourceNF.name} and ${targetNF.name} are in different subnets`);
+            
+            if (window.logEngine) {
+                window.logEngine.addLog(sourceNF.id, 'WARNING',
+                    `Auto-connection blocked: Different subnets`, {
+                    sourceSubnet: sourceNetwork + '.0/24',
+                    targetSubnet: targetNetwork + '.0/24',
+                    reason: 'Cross-subnet connections not allowed'
+                });
+            }
+            return;
+        }
+
+        // Check if connection already exists
+        const existingConnections = window.dataStore.getConnectionsForNF(sourceNF.id);
+        const alreadyConnected = existingConnections.some(conn => 
+            conn.sourceId === targetNF.id || conn.targetId === targetNF.id
+        );
+
+        if (alreadyConnected) {
+            console.log(`ℹ️ ${description}: Already connected`);
+            return;
+        }
+
+        // Create auto-connection
+        if (window.connectionManager) {
+            const connection = window.connectionManager.createManualConnection(sourceNF.id, targetNF.id);
+            
+            if (connection) {
+                console.log(`✅ Auto-connected: ${description}`);
+                
+                if (window.logEngine) {
+                    window.logEngine.addLog(sourceNF.id, 'SUCCESS',
+                        `Auto-connected to ${targetNF.name}`, {
+                        targetType: targetNF.type,
+                        interface: connection.interfaceName,
+                        autoConnection: true,
+                        subnet: sourceNetwork + '.0/24',
+                        reason: 'Dependency requirement'
+                    });
+                }
+
+                // Re-render canvas
+                if (window.canvasRenderer) {
+                    window.canvasRenderer.render();
+                }
+            }
+        }
+    }
+
+    /**
+     * Get next available IP in a specific subnet
+     * @param {string} subnet - Subnet (e.g., "192.168.1")
+     * @returns {string} Available IP address
+     */
+    getNextAvailableIPInSubnet(subnet) {
+        const allNFs = window.dataStore?.getAllNFs() || [];
+        const usedIPs = new Set(allNFs.map(nf => nf.config.ipAddress));
+
+        for (let host = 10; host <= 254; host++) {
+            const ip = `${subnet}.${host}`;
+            if (!usedIPs.has(ip)) {
+                return ip;
+            }
+        }
+
+        // Fallback
+        return `${subnet}.${Math.floor(Math.random() * 244) + 10}`;
     }
 
     /**
@@ -3073,7 +3330,6 @@ class UIController {
             ['ifconfig'],
             ['ping'],
             ['ping', 'gateway'],
-            ['ping', 'subnet'],
             ['systeminfo'],
             ['netstat'],
             ['cls'],
@@ -3135,17 +3391,12 @@ class UIController {
             const target = args[1];
             if (target === 'gateway') {
                 await this.executeWindowsPingGateway(nf, output);
-            } else if (target === 'subnet') {
-                await this.executeWindowsPingSubnet(nf, output);
             } else if (target) {
                 await this.executeWindowsPing(nf, target, output);
             } else {
                 this.addTerminalLine(output, 'Usage: ping <hostname or IP address>', 'error');
                 this.addTerminalLine(output, '       ping gateway', 'error');
-                this.addTerminalLine(output, '       ping subnet', 'error');
             }
-        } else if (cmd === 'ping subnet') {
-            await this.executeWindowsPingSubnet(nf, output);
         } else if (cmd === 'cls' || cmd === 'clear') {
             output.innerHTML = '';
         } else if (cmd === 'exit') {
@@ -3193,7 +3444,6 @@ class UIController {
             'ifconfig       - Display network configuration',
             'PING <ip>      - Test connectivity to specific IP',
             'PING GATEWAY   - Test connectivity to default gateway',
-            'PING SUBNET    - Discover and show all running IPs in subnet',
             'SYSTEMINFO     - Display system information',
             'NETSTAT        - Display network connections',
             'CLS            - Clear the screen',
@@ -3202,7 +3452,6 @@ class UIController {
             'Network Commands:',
             '  ping 192.168.1.10    - Ping specific IP address',
             '  ping gateway         - Test gateway connectivity',
-            '  ping subnet          - Show all active IPs in current subnet',
             ''
         ];
 
@@ -3245,46 +3494,138 @@ class UIController {
      * @param {HTMLElement} output - Output element
      */
     async executeWindowsPing(nf, target, output) {
-        // Validate IP
-        if (!this.isValidIP(target)) {
-            this.addTerminalLine(output, `Ping request could not find host ${target}. Please check the name and try again.`, 'error');
-            return;
+        // Disable terminal input during ping
+        const input = document.getElementById('terminal-input');
+        const inputWrapper = document.getElementById('terminal-input-wrapper');
+        if (input) {
+            input.disabled = true;
+            input.placeholder = '';
+            if (inputWrapper) {
+                inputWrapper.style.opacity = '0.5';
+            }
         }
 
-        // Check subnet restriction FIRST
-        const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
-        const targetNetwork = this.getNetworkFromIP(target);
-        
-        if (sourceNetwork !== targetNetwork) {
+        try {
+            // Validate IP
+            if (!this.isValidIP(target)) {
+                this.addTerminalLine(output, `Ping request could not find host ${target}. Please check the name and try again.`, 'error');
+                return;
+            }
+
+            // Check subnet restriction FIRST
+            const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
+            const targetNetwork = this.getNetworkFromIP(target);
+            
+            if (sourceNetwork !== targetNetwork) {
+                this.addTerminalLine(output, `Pinging ${target} with 32 bytes of data:`, 'info');
+                this.addTerminalLine(output, '', 'blank');
+                this.addTerminalLine(output, `PING: transmit failed. General failure.`, 'error');
+                this.addTerminalLine(output, '', 'blank');
+                this.addTerminalLine(output, `Network Error: Cannot reach ${target}`, 'error');
+                this.addTerminalLine(output, `Source subnet: ${sourceNetwork}.0/24`, 'error');
+                this.addTerminalLine(output, `Target subnet: ${targetNetwork}.0/24`, 'error');
+                this.addTerminalLine(output, `Reason: Cross-subnet communication not allowed`, 'error');
+                this.addTerminalLine(output, '', 'blank');
+                this.addTerminalLine(output, `Ping statistics for ${target}:`, 'info');
+                this.addTerminalLine(output, `    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),`, 'info');
+                return;
+            }
+
+            // Initial ping message
             this.addTerminalLine(output, `Pinging ${target} with 32 bytes of data:`, 'info');
             this.addTerminalLine(output, '', 'blank');
-            this.addTerminalLine(output, `PING: transmit failed. General failure.`, 'error');
-            this.addTerminalLine(output, '', 'blank');
-            this.addTerminalLine(output, `Network Error: Cannot reach ${target}`, 'error');
-            this.addTerminalLine(output, `Source subnet: ${sourceNetwork}.0/24`, 'error');
-            this.addTerminalLine(output, `Target subnet: ${targetNetwork}.0/24`, 'error');
-            this.addTerminalLine(output, `Reason: Cross-subnet communication not allowed`, 'error');
-            this.addTerminalLine(output, '', 'blank');
-            this.addTerminalLine(output, `Ping statistics for ${target}:`, 'info');
-            this.addTerminalLine(output, `    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),`, 'info');
-            return;
+
+            // Check if target is reachable (same subnet)
+            const isReachable = this.isTargetReachable(nf, target);
+            const results = [];
+
+            // Send 4 ping packets with 0.5 second delays
+            for (let i = 1; i <= 4; i++) {
+                await this.delay(500); // 0.5 second delay
+
+                if (isReachable) {
+                    const responseTime = this.generateResponseTime();
+                    const ttl = 255;
+                    
+                    results.push({
+                        sequence: i,
+                        time: responseTime,
+                        ttl: ttl,
+                        success: true
+                    });
+
+                    this.addTerminalLine(output, 
+                        `Reply from ${target}: bytes=32 time=${responseTime}ms TTL=${ttl}`, 
+                        'success'
+                    );
+                } else {
+                    await this.delay(500); // Additional delay for timeout
+                    
+                    results.push({
+                        sequence: i,
+                        success: false,
+                        timeout: true
+                    });
+
+                    this.addTerminalLine(output, 'Request timed out.', 'error');
+                }
+            }
+
+            // Show statistics after final delay
+            await this.delay(500);
+            this.showPingStatistics(target, results, output);
+        } finally {
+            // Re-enable terminal input after ping completes
+            if (input) {
+                input.disabled = false;
+                input.placeholder = '';
+                input.focus();
+                if (inputWrapper) {
+                    inputWrapper.style.opacity = '1';
+                }
+            }
+        }
+    }
+
+    /**
+     * Execute ping to gateway
+     * @param {Object} nf - Network Function
+     * @param {HTMLElement} output - Output element
+     */
+    async executeWindowsPingGateway(nf, output) {
+        // Disable terminal input during ping
+        const input = document.getElementById('terminal-input');
+        const inputWrapper = document.getElementById('terminal-input-wrapper');
+        if (input) {
+            input.disabled = true;
+            input.placeholder = '';
+            if (inputWrapper) {
+                inputWrapper.style.opacity = '0.5';
+            }
         }
 
-        // Initial ping message
-        this.addTerminalLine(output, `Pinging ${target} with 32 bytes of data:`, 'info');
-        this.addTerminalLine(output, '', 'blank');
+        try {
+            const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
+            const gatewayIP = `${sourceNetwork}.1`; // Gateway is typically .1
+            
+            this.addTerminalLine(output, `Pinging Gateway: ${gatewayIP}`, 'info');
+            this.addTerminalLine(output, `Source: ${nf.name} (${nf.config.ipAddress})`, 'info');
+            this.addTerminalLine(output, `Subnet: ${sourceNetwork}.0/24`, 'info');
+            this.addTerminalLine(output, '', 'blank');
+            
+            // Gateway ping simulation
+            this.addTerminalLine(output, `Pinging ${gatewayIP} with 32 bytes of data:`, 'info');
+            this.addTerminalLine(output, '', 'blank');
 
-        // Check if target is reachable (same subnet)
-        const isReachable = this.isTargetReachable(nf, target);
-        const results = [];
-
-        // Send 4 ping packets with 0.5 second delays
-        for (let i = 1; i <= 4; i++) {
-            await this.delay(500); // 0.5 second delay
-
-            if (isReachable) {
-                const responseTime = this.generateResponseTime();
-                const ttl = 255;
+            const results = [];
+            
+            // Send 4 ping packets to gateway
+            for (let i = 1; i <= 4; i++) {
+                await this.delay(500);
+                
+                // Gateway is always reachable in same subnet
+                const responseTime = this.generateGatewayResponseTime();
+                const ttl = 64; // Gateway TTL
                 
                 results.push({
                     sequence: i,
@@ -3294,75 +3635,29 @@ class UIController {
                 });
 
                 this.addTerminalLine(output, 
-                    `Reply from ${target}: bytes=32 time=${responseTime}ms TTL=${ttl}`, 
+                    `Reply from ${gatewayIP}: bytes=32 time=${responseTime}ms TTL=${ttl}`, 
                     'success'
                 );
-            } else {
-                await this.delay(500); // Additional delay for timeout
-                
-                results.push({
-                    sequence: i,
-                    success: false,
-                    timeout: true
-                });
+            }
 
-                this.addTerminalLine(output, 'Request timed out.', 'error');
+            // Show gateway statistics
+            await this.delay(500);
+            this.showPingStatistics(gatewayIP, results, output);
+            
+            this.addTerminalLine(output, '', 'blank');
+            this.addTerminalLine(output, `✅ Gateway ${gatewayIP} is reachable`, 'success');
+            this.addTerminalLine(output, `Network connectivity: GOOD`, 'success');
+        } finally {
+            // Re-enable terminal input after ping completes
+            if (input) {
+                input.disabled = false;
+                input.placeholder = '';
+                input.focus();
+                if (inputWrapper) {
+                    inputWrapper.style.opacity = '1';
+                }
             }
         }
-
-        // Show statistics after final delay
-        await this.delay(500);
-        this.showPingStatistics(target, results, output);
-    }
-
-    /**
-     * Execute ping to gateway
-     * @param {Object} nf - Network Function
-     * @param {HTMLElement} output - Output element
-     */
-    async executeWindowsPingGateway(nf, output) {
-        const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
-        const gatewayIP = `${sourceNetwork}.1`; // Gateway is typically .1
-        
-        this.addTerminalLine(output, `Pinging Gateway: ${gatewayIP}`, 'info');
-        this.addTerminalLine(output, `Source: ${nf.name} (${nf.config.ipAddress})`, 'info');
-        this.addTerminalLine(output, `Subnet: ${sourceNetwork}.0/24`, 'info');
-        this.addTerminalLine(output, '', 'blank');
-        
-        // Gateway ping simulation
-        this.addTerminalLine(output, `Pinging ${gatewayIP} with 32 bytes of data:`, 'info');
-        this.addTerminalLine(output, '', 'blank');
-
-        const results = [];
-        
-        // Send 4 ping packets to gateway
-        for (let i = 1; i <= 4; i++) {
-            await this.delay(500);
-            
-            // Gateway is always reachable in same subnet
-            const responseTime = this.generateGatewayResponseTime();
-            const ttl = 64; // Gateway TTL
-            
-            results.push({
-                sequence: i,
-                time: responseTime,
-                ttl: ttl,
-                success: true
-            });
-
-            this.addTerminalLine(output, 
-                `Reply from ${gatewayIP}: bytes=32 time=${responseTime}ms TTL=${ttl}`, 
-                'success'
-            );
-        }
-
-        // Show gateway statistics
-        await this.delay(500);
-        this.showPingStatistics(gatewayIP, results, output);
-        
-        this.addTerminalLine(output, '', 'blank');
-        this.addTerminalLine(output, `✅ Gateway ${gatewayIP} is reachable`, 'success');
-        this.addTerminalLine(output, `Network connectivity: GOOD`, 'success');
     }
 
     /**
@@ -3370,86 +3665,6 @@ class UIController {
      * @param {Object} nf - Network Function
      * @param {HTMLElement} output - Output element
      */
-    async executeWindowsPingSubnet(nf, output) {
-        const sourceNetwork = this.getNetworkFromIP(nf.config.ipAddress);
-        const allNFs = window.dataStore?.getAllNFs() || [];
-        
-        // Find all services in the same subnet
-        const sameSubnetServices = allNFs.filter(otherNf => 
-            this.getNetworkFromIP(otherNf.config.ipAddress) === sourceNetwork
-        );
-
-        // Show subnet scan header
-        this.addTerminalLine(output, `═══════════════════════════════════════`, 'info');
-        this.addTerminalLine(output, `SUBNET DISCOVERY: ${sourceNetwork}.0/24`, 'info');
-        this.addTerminalLine(output, `═══════════════════════════════════════`, 'info');
-        this.addTerminalLine(output, `Source: ${nf.name} (${nf.config.ipAddress})`, 'info');
-        this.addTerminalLine(output, `Gateway: ${sourceNetwork}.1 (Default Gateway)`, 'info');
-        this.addTerminalLine(output, '', 'blank');
-
-        // Show all running IPs in subnet
-        this.addTerminalLine(output, `🔍 RUNNING IPs IN SUBNET ${sourceNetwork}.0/24:`, 'info');
-        this.addTerminalLine(output, '─────────────────────────────────────────', 'info');
-        
-        // Always show gateway first
-        this.addTerminalLine(output, `  ${sourceNetwork}.1      Gateway (Default Route)           [ACTIVE]`, 'success');
-        
-        // Show all NF IPs
-        const sortedServices = sameSubnetServices.sort((a, b) => {
-            const aHost = parseInt(a.config.ipAddress.split('.')[3]);
-            const bHost = parseInt(b.config.ipAddress.split('.')[3]);
-            return aHost - bHost;
-        });
-        
-        sortedServices.forEach(targetNf => {
-            const statusIcon = targetNf.status === 'stable' ? '✅' : '⚠️';
-            const statusText = targetNf.status === 'stable' ? 'STABLE' : targetNf.status.toUpperCase();
-            const padding = ' '.repeat(Math.max(0, 15 - targetNf.config.ipAddress.length));
-            
-            this.addTerminalLine(output, 
-                `  ${targetNf.config.ipAddress}${padding}${targetNf.name} (${targetNf.type})${' '.repeat(Math.max(0, 20 - targetNf.name.length))}[${statusText}] ${statusIcon}`, 
-                targetNf.status === 'stable' ? 'success' : 'error'
-            );
-        });
-        
-        this.addTerminalLine(output, '─────────────────────────────────────────', 'info');
-        this.addTerminalLine(output, `Total Active IPs: ${sameSubnetServices.length + 1} (including gateway)`, 'info');
-        this.addTerminalLine(output, '', 'blank');
-
-        if (sameSubnetServices.length === 0) {
-            this.addTerminalLine(output, `⚠️ No other services found in subnet ${sourceNetwork}.0/24`, 'error');
-            this.addTerminalLine(output, `Add more services with IPs in range ${sourceNetwork}.2-${sourceNetwork}.254`, 'info');
-            return;
-        }
-
-        // Ask user if they want to ping all discovered IPs
-        this.addTerminalLine(output, '🏓 CONNECTIVITY TEST OPTIONS:', 'info');
-        this.addTerminalLine(output, '  Type "ping gateway" to test gateway connectivity', 'info');
-        this.addTerminalLine(output, '  Type "ping <IP>" to test specific IP', 'info');
-        this.addTerminalLine(output, '', 'blank');
-        
-        // Auto-test gateway connectivity
-        this.addTerminalLine(output, '🔄 Testing gateway connectivity...', 'info');
-        await this.delay(500);
-        
-        const gatewayIP = `${sourceNetwork}.1`;
-        const gatewayResponseTime = this.generateGatewayResponseTime();
-        this.addTerminalLine(output, `Reply from ${gatewayIP}: bytes=32 time=${gatewayResponseTime}ms TTL=64`, 'success');
-        this.addTerminalLine(output, `✅ Gateway is reachable`, 'success');
-        this.addTerminalLine(output, '', 'blank');
-
-        // Summary with network health
-        this.addTerminalLine(output, '═══════════════════════════════════════', 'info');
-        this.addTerminalLine(output, `SUBNET SUMMARY FOR ${sourceNetwork}.0/24`, 'success');
-        this.addTerminalLine(output, '═══════════════════════════════════════', 'info');
-        this.addTerminalLine(output, `Gateway Status: ✅ REACHABLE (${gatewayIP})`, 'success');
-        this.addTerminalLine(output, `Active Services: ${sameSubnetServices.length}`, 'info');
-        this.addTerminalLine(output, `Stable Services: ${sameSubnetServices.filter(nf => nf.status === 'stable').length}`, 'success');
-        this.addTerminalLine(output, `Unstable Services: ${sameSubnetServices.filter(nf => nf.status !== 'stable').length}`, 'error');
-        this.addTerminalLine(output, `Network Health: ${this.calculateNetworkHealth(sameSubnetServices)}`, 'info');
-        this.addTerminalLine(output, '═══════════════════════════════════════', 'info');
-    }
-
     /**
      * Generate gateway response time (typically faster than regular hosts)
      * @returns {number} Response time in milliseconds
@@ -3457,23 +3672,6 @@ class UIController {
     generateGatewayResponseTime() {
         // Gateway typically responds faster (1-5ms)
         return Math.max(1, Math.round(Math.random() * 4 + 1));
-    }
-
-    /**
-     * Calculate network health based on service status
-     * @param {Array} services - Array of services in subnet
-     * @returns {string} Network health status
-     */
-    calculateNetworkHealth(services) {
-        if (services.length === 0) return 'NO SERVICES';
-        
-        const stableCount = services.filter(nf => nf.status === 'stable').length;
-        const healthPercentage = (stableCount / services.length) * 100;
-        
-        if (healthPercentage >= 90) return '🟢 EXCELLENT';
-        if (healthPercentage >= 75) return '🟡 GOOD';
-        if (healthPercentage >= 50) return '🟠 FAIR';
-        return '🔴 POOR';
     }
 
     /**
