@@ -187,8 +187,8 @@
       "type": "ext-dn",
       "name": "ext-dn-1",
       "position": {
-        "x": 354,
-        "y": 520
+        "x": 540,
+        "y": 420
       },
       "color": "#00bcd4",
       "icon": "simulation/images/icons/upf.svg",
@@ -196,7 +196,7 @@
       "statusTimestamp": 1762750312000,
       "config": {
         "ipAddress": "192.168.1.45",
-        "port": 80,
+        "port": 8081,
         "capacity": 1000,
         "load": 0,
         "httpProtocol": "HTTP/2"
@@ -207,8 +207,8 @@
       "type": "MySQL",
       "name": "MySQL-1",
       "position": {
-        "x": 638,
-        "y": 420
+        "x": 760,
+        "y": 24
       },
       "color": "#f44336",
       "icon": "simulation/images/icons/mysql.svg",

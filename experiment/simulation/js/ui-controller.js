@@ -1953,15 +1953,15 @@ class UIController {
             <h4>Configure New ${nfType}</h4>
             
             <div class="form-group">
-                
+                <label>📍 IP Address</label>
                 <input type="text" id="config-ip" value="${defaultIP}" required>
-                
+                <small id="ip-validation-msg" class="validation-message"></small>
             </div>
             
             <div class="form-group">
-                
-                <input type="number" id="config-port" value="${defaultPort}" required>
-            
+                <label>🔌 Port</label>
+                <input type="text" id="config-port" value="${defaultPort}" required>
+                <small id="port-validation-msg" class="validation-message"></small>
             </div>
             
             <div class="form-group">
@@ -1980,6 +1980,54 @@ class UIController {
             </button>
             <button class="btn btn-secondary btn-block" id="btn-cancel-nf">Cancel</button>
         `;
+
+        // Add real-time validation for IP address
+        const ipInput = document.getElementById('config-ip');
+        const ipValidationMsg = document.getElementById('ip-validation-msg');
+        if (ipInput && ipValidationMsg) {
+            ipInput.addEventListener('keypress', (e) => {
+                const char = e.key;
+                if (!/[0-9.]/.test(char)) {
+                    e.preventDefault();
+                }
+            });
+            ipInput.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const filteredText = pastedText.replace(/[^0-9.]/g, '');
+                document.execCommand('insertText', false, filteredText);
+            });
+            ipInput.addEventListener('input', () => {
+                this.validateIPInput(ipInput, ipValidationMsg);
+            });
+            ipInput.addEventListener('blur', () => {
+                this.validateIPInput(ipInput, ipValidationMsg);
+            });
+        }
+
+        // Add real-time validation for port
+        const portInput = document.getElementById('config-port');
+        const portValidationMsg = document.getElementById('port-validation-msg');
+        if (portInput && portValidationMsg) {
+            portInput.addEventListener('keypress', (e) => {
+                const char = e.key;
+                if (!/[0-9]/.test(char)) {
+                    e.preventDefault();
+                }
+            });
+            portInput.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const filteredText = pastedText.replace(/[^0-9]/g, '');
+                document.execCommand('insertText', false, filteredText);
+            });
+            portInput.addEventListener('input', () => {
+                this.validatePortInput(portInput, portValidationMsg);
+            });
+            portInput.addEventListener('blur', () => {
+                this.validatePortInput(portInput, portValidationMsg);
+            });
+        }
 
         // Protocol change event listener
         const protocolSelect = document.getElementById('config-http-protocol');
@@ -2052,7 +2100,7 @@ class UIController {
             
             <div class="form-group">
                 <label>Port</label>
-                <input type="number" id="config-port" value="${nf.config.port}">
+                <input type="number" id="config-port" value="${nf.config.port}" min="1000" max="999999">
             </div>
             
             
@@ -2077,6 +2125,40 @@ class UIController {
             </button>
             
         `;
+
+        // Add keypress and paste listeners for IP input
+        const ipInput = document.getElementById('config-ip');
+        if (ipInput) {
+            ipInput.addEventListener('keypress', (e) => {
+                const char = e.key;
+                if (!/[0-9.]/.test(char)) {
+                    e.preventDefault();
+                }
+            });
+            ipInput.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const filteredText = pastedText.replace(/[^0-9.]/g, '');
+                document.execCommand('insertText', false, filteredText);
+            });
+        }
+
+        // Add keypress and paste listeners for port input
+        const portInput = document.getElementById('config-port');
+        if (portInput) {
+            portInput.addEventListener('keypress', (e) => {
+                const char = e.key;
+                if (!/[0-9]/.test(char)) {
+                    e.preventDefault();
+                }
+            });
+            portInput.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const filteredText = pastedText.replace(/[^0-9]/g, '');
+                document.execCommand('insertText', false, filteredText);
+            });
+        }
 
         // Protocol change event listener
         const protocolSelect = document.getElementById('config-http-protocol');
@@ -2141,11 +2223,25 @@ class UIController {
         }
 
         const ipAddress = document.getElementById('config-ip')?.value;
-        const port = parseInt(document.getElementById('config-port')?.value);
+        const portValue = document.getElementById('config-port')?.value;
         const httpProtocol = document.getElementById('config-http-protocol')?.value;
 
-        if (!ipAddress || !port) {
+        if (!ipAddress || !portValue) {
             alert('Please fill all required fields');
+            return;
+        }
+
+        // Validate port format (no special characters)
+        if (!this.isValidPort(portValue)) {
+            alert('❌ Invalid Port Number!\n\nPort must contain only digits (no special characters)\n\nPort range: 1000 to 999999\n\nExamples: 8080, 38412, 123456');
+            return;
+        }
+
+        const port = parseInt(portValue);
+        
+        // Validate port number (4-6 digits: 1000-999999)
+        if (isNaN(port) || port < 1000 || port > 999999) {
+            alert('❌ Invalid Port Number!\n\nPort must be between 1000 and 999999 (4-6 digits).\n\nExamples: 8080, 38412, 123456');
             return;
         }
         
@@ -2155,7 +2251,7 @@ class UIController {
 
         // Validate IP address format
         if (!this.isValidIP(ipAddress)) {
-            alert('❌ Invalid IP address format!\n\nPlease enter a valid IP address (e.g., 192.168.1.20)');
+            alert('❌ Invalid IP Address!\n\nIP address must be in range 1.0.0.0 to 255.255.255.255\n\nExamples:\n• 192.168.1.20\n• 10.0.0.5\n• 172.16.0.100\n\n❌ Not allowed:\n• 0.0.0.0 or any IP starting with 0\n• Special characters (only digits and dots)');
             return;
         }
 
@@ -2342,10 +2438,10 @@ class UIController {
         const mysqlIP = this.getNextAvailableIPInSubnet(sourceNetwork);
         const mysqlPort = this.getNextAvailablePort();
 
-        // Calculate position near UDR
+        // Calculate position: MySQL should be positioned above UDR (same x, but higher y position)
         const mysqlPosition = {
-            x: udrNF.position.x + 120,
-            y: udrNF.position.y
+            x: udrNF.position.x + 122,  // Slightly to the right of UDR
+            y: udrNF.position.y         // Same vertical level as UDR
         };
 
         // Create MySQL NF
@@ -2415,10 +2511,10 @@ class UIController {
         const extDnIP = this.getNextAvailableIPInSubnet(sourceNetwork);
         const extDnPort = this.getNextAvailablePort();
 
-        // Calculate position near UPF
+        // Calculate position: EXT-DN should be to the right of UPF (same vertical level)
         const extDnPosition = {
-            x: upfNF.position.x + 120,
-            y: upfNF.position.y
+            x: upfNF.position.x + 186,  // To the right of UPF
+            y: upfNF.position.y         // Same vertical level as UPF
         };
 
         // Create EXT-DN NF
@@ -2567,17 +2663,31 @@ class UIController {
     saveNFConfig(nfId) {
         const name = document.getElementById('config-name')?.value;
         const ipAddress = document.getElementById('config-ip')?.value;
-        const port = parseInt(document.getElementById('config-port')?.value);
+        const portValue = document.getElementById('config-port')?.value;
         const httpProtocol = document.getElementById('config-http-protocol')?.value;
 
-        if (!name || !ipAddress || !port) {
+        if (!name || !ipAddress || !portValue) {
             alert('Please fill all required fields');
+            return;
+        }
+
+        // Validate port format (no special characters)
+        if (!this.isValidPort(portValue)) {
+            alert('❌ Invalid Port Number!\n\nPort must contain only digits (no special characters)\n\nPort range: 1000 to 999999\n\nExamples: 8080, 38412, 123456');
+            return;
+        }
+
+        const port = parseInt(portValue);
+
+        // Validate port number (4-6 digits: 1000-999999)
+        if (isNaN(port) || port < 1000 || port > 999999) {
+            alert('❌ Invalid Port Number!\n\nPort must be between 1000 and 999999 (4-6 digits).\n\nExamples: 8080, 38412, 123456');
             return;
         }
 
         // Validate IP address format
         if (!this.isValidIP(ipAddress)) {
-            alert('❌ Invalid IP address format!\n\nPlease enter a valid IP address (e.g., 192.168.1.20)');
+            alert('❌ Invalid IP Address!\n\nIP address must be in range 1.0.0.0 to 255.255.255.255\n\nExamples:\n• 192.168.1.20\n• 10.0.0.5\n• 172.16.0.100\n\n❌ Not allowed:\n• 0.0.0.0 or any IP starting with 0\n• Special characters (only digits and dots)');
             return;
         }
 
@@ -3884,8 +3994,184 @@ class UIController {
      * @returns {boolean} True if valid IP
      */
     isValidIP(ip) {
+        // Check for null, undefined, or empty string
+        if (!ip || typeof ip !== 'string') {
+            return false;
+        }
+
+        // Check for special characters (only digits and dots allowed)
+        if (!/^[0-9.]+$/.test(ip)) {
+            return false;
+        }
+
+        // Validate IP format
         const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-        return ipRegex.test(ip);
+        if (!ipRegex.test(ip)) {
+            return false;
+        }
+
+        // Split IP into octets
+        const octets = ip.split('.').map(octet => parseInt(octet, 10));
+
+        // First octet must be between 1 and 255 (not 0)
+        if (octets[0] < 1 || octets[0] > 255) {
+            return false;
+        }
+
+        // All other octets must be between 0 and 255 (already validated by regex)
+        // But we double-check here for safety
+        for (let i = 1; i < octets.length; i++) {
+            if (octets[i] < 0 || octets[i] > 255) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate port number
+     * @param {string|number} port - Port number to validate
+     * @returns {boolean} True if valid port
+     */
+    isValidPort(port) {
+        // Convert to string for validation
+        const portStr = String(port);
+
+        // Check for special characters (only digits allowed)
+        if (!/^[0-9]+$/.test(portStr)) {
+            return false;
+        }
+
+        // Convert to number
+        const portNum = parseInt(portStr, 10);
+
+        // Check if it's a valid number
+        if (isNaN(portNum)) {
+            return false;
+        }
+
+        // Port must be between 1 and 65535
+        if (portNum < 1 || portNum > 65535) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate IP input field in real-time
+     * @param {HTMLElement} input - Input element
+     * @param {HTMLElement} messageElement - Message element for feedback
+     */
+    validateIPInput(input, messageElement) {
+        const ipAddress = input.value.trim();
+
+        if (!ipAddress) {
+            input.classList.remove('input-valid', 'input-invalid');
+            messageElement.textContent = '';
+            messageElement.className = 'validation-message';
+            return;
+        }
+
+        // Check for special characters first
+        if (!/^[0-9.]+$/.test(ipAddress)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ Only digits and dots allowed';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Check if it's a valid IP format
+        if (!this.isValidIP(ipAddress)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            
+            // Provide specific error message
+            if (ipAddress === '0.0.0.0' || ipAddress.startsWith('0.')) {
+                messageElement.textContent = '❌ IP cannot be 0.0.0.0 or start with 0';
+            } else {
+                messageElement.textContent = '❌ Invalid IP format (must be 1.0.0.0 to 255.255.255.255)';
+            }
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Check for IP conflicts
+        if (!window.nfManager?.isIPAddressAvailable(ipAddress)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ IP address already in use';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Valid IP
+        input.classList.remove('input-invalid');
+        input.classList.add('input-valid');
+        messageElement.textContent = '✅ Valid IP address';
+        messageElement.className = 'validation-message success';
+    }
+
+    /**
+     * Validate port input field in real-time
+     * @param {HTMLElement} input - Input element
+     * @param {HTMLElement} messageElement - Message element for feedback
+     */
+    validatePortInput(input, messageElement) {
+        const portValue = input.value.trim();
+
+        if (!portValue) {
+            input.classList.remove('input-valid', 'input-invalid');
+            messageElement.textContent = '';
+            messageElement.className = 'validation-message';
+            return;
+        }
+
+        // Check for special characters first
+        if (!/^[0-9]+$/.test(portValue)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ Only digits allowed (no special characters)';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        const port = parseInt(portValue, 10);
+
+        // Check if it's a valid number
+        if (isNaN(port)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ Invalid port number';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Check port range (1000-999999 for this application)
+        if (port < 1000 || port > 999999) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ Port must be between 1000 and 999999';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Check for port conflicts
+        if (!window.nfManager?.isPortAvailable(port)) {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            messageElement.textContent = '❌ Port already in use';
+            messageElement.className = 'validation-message error';
+            return;
+        }
+
+        // Valid port
+        input.classList.remove('input-invalid');
+        input.classList.add('input-valid');
+        messageElement.textContent = '✅ Valid port number';
+        messageElement.className = 'validation-message success';
     }
 
     /**
