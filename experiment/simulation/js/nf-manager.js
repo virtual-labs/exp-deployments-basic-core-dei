@@ -296,6 +296,7 @@ class NFManager {
 
     /**
      * Generate unique port number to prevent conflicts (UPDATED for real-time availability)
+     * Generates ports between 1000-99999 (4-6 digits)
      * @returns {number} Unique port number
      */
     generateUniquePort() {
@@ -305,7 +306,7 @@ class NFManager {
         
         console.log(`🔍 Checking port availability. Currently used ports:`, Array.from(usedPorts));
         
-        // Start from port 8080 and find next available
+        // Start from port 8080 and find next available (4-digit range)
         for (let port = 8080; port <= 9999; port++) {
             if (!usedPorts.has(port)) {
                 console.log(`🔌 Generated unique port: ${port}`);
@@ -313,9 +314,17 @@ class NFManager {
             }
         }
 
-        // Fallback: random port if all are used
-        const randomPort = Math.floor(Math.random() * 1000) + 8000;
-        console.warn(`⚠️ All standard ports (8080-9999) used, using fallback port: ${randomPort}`);
+        // Try 5-digit range (10000-65535)
+        for (let port = 10000; port <= 65535; port++) {
+            if (!usedPorts.has(port)) {
+                console.log(`🔌 Generated unique port: ${port}`);
+                return port;
+            }
+        }
+
+        // Fallback: random 4-digit port if all are used
+        const randomPort = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
+        console.warn(`⚠️ All standard ports used, using fallback port: ${randomPort}`);
         return randomPort;
     }
 
