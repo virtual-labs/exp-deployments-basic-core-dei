@@ -4,11 +4,11 @@ The 5G Core Network (5GC) marks a significant evolution in mobile network archit
 
 Cloud-native design principles (containerization, microservices, and orchestration) underpin the 5GC. These principles enable operators to deploy network functions as software instances that can scale dynamically, automate lifecycle operations, and improve resource utilization while reducing capital and operational expenditures.
 
+As illustrated in **Figure 1**, the Service-Based Architecture (SBA) of the 5G Core Network highlights how various network functions communicate with each other through standardized, service-based interfaces.
+
 <img src="images/fig-1.svg" alt="5G Core Network Service-Based Architecture" width="50%">
 
-*Fig: 5G Core Network Service-Based Architecture*
-
-This figure illustrates the Service-Based Architecture (SBA) of the 5G Core Network, highlighting how various network functions communicate with each other through standardized, service-based interfaces.
+*Fig 1: 5G Core Network Service-Based Architecture*
 
 ## 2. Key Components of the 5G Core
 
@@ -20,11 +20,11 @@ This figure illustrates the Service-Based Architecture (SBA) of the 5G Core Netw
 
 The UPF implements the user/data plane for 5GC: high-performance packet forwarding, traffic inspection, QoS enforcement, and usage reporting. UPFs may be deployed centrally or at the network edge (MEC) to meet different latency and throughput requirements.
 
+**Figure 2** depicts the step-by-step signaling flow required to establish a Protocol Data Unit (PDU) session. It demonstrates the critical interactions among the User Equipment (UE), the Control Plane functions, and the User Plane Function (UPF) during this establishment process.
+
 <img src="images/fig-2.svg" alt="5G Core Network Session Establishment Flow" width="50%">
 
-*Fig: 5G Core Network: Session Establishment Flow*
-
-This figure depicts the step-by-step signaling flow required to establish a Protocol Data Unit (PDU) session. It demonstrates the critical interactions among the User Equipment (UE), the Control Plane functions, and the User Plane Function (UPF).
+*Fig 2: 5G Core Network: Session Establishment Flow*
 
 
 ## 3. Software-Defined Networking (SDN) Principles in 5GC
@@ -37,11 +37,11 @@ The 5GC embraces SDN principles by separating control and user planes and by exp
 
 The SMF closely resembles an SDN controller for the user plane: it maintains session state and programs UPF forwarding rules to realize traffic steering and QoS.
 
+**Figure 3** demonstrates the conceptual mapping between traditional Software-Defined Networking (SDN) layers—namely the Application, Control, and Infrastructure layers—and their corresponding functional entities within the 5G Core Network.
+
 <img src="images/fig-3.svg" alt="SDN Architecture Mapping to 5G Core Network" width="50%">
 
-*Fig: SDN Architecture Mapping to 5G Core Network*
-
-This figure demonstrates the conceptual mapping between traditional Software-Defined Networking (SDN) layers—namely the Application, Control, and Infrastructure layers—and their corresponding functional entities within the 5G Core Network.
+*Fig 3: SDN Architecture Mapping to 5G Core Network*
 
 ## 4. Integration of SDN, 5GC, and Container Technologies
 
@@ -65,11 +65,11 @@ Modern 5GC deployments combine SDN principles with cloud-native technologies (Do
 
 <ol type="a"> <li><b>Programmability and flexibility:</b> network behavior is modified via software updates and API calls.</li> <li><b>Multi-vendor interoperability:</b> standardized interfaces and container packaging reduce vendor lock-in.</li> <li><b>Resilience:</b> Kubernetes self-healing, rolling updates, and distributed replicas improve availability.</li> </ol>
 
+To further understand the practical implementation of these concepts, **Figure 4** outlines the detailed data path of a packet as it traverses from the Radio Access Network (RAN) through the containerized User Plane Function (UPF) within an SDN-enabled 5G environment.
+
 <img src="images/fig-4.svg" alt="Packet Flow in Containerized SDN-Based 5G Core Network" width="50%">
 
-*Fig: Packet Flow in a Containerized SDN-Based 5G Core Network*
-
-This figure outlines the detailed data path of a packet as it traverses from the Radio Access Network (RAN) through the containerized User Plane Function (UPF) within an SDN-enabled 5G environment.
+*Fig 4: Packet Flow in a Containerized SDN-Based 5G Core Network*
 
 ## 6. Challenges and Considerations
 
@@ -79,13 +79,13 @@ This figure outlines the detailed data path of a packet as it traverses from the
 
 ### 6.2 Operational and Security Challenges
 
-<ol type="a"> <li></b>Operational complexity:</b> teams must adopt Kubernetes, observability tooling, and cloud-native practices.</li> <li><b>State management:</b> use StatefulSets or external data stores where persistent state is required.</li> <li><b>Security:</b> secure images, runtime protections, network policies, and robust API authentication/authorization are required.</li> </ol>
+<ol type="a"> <li><b>Operational complexity:</b> teams must adopt Kubernetes, observability tooling, and cloud-native practices.</li> <li><b>State management:</b> use StatefulSets or external data stores where persistent state is required.</li> <li><b>Security:</b> secure images, runtime protections, network policies, and robust API authentication/authorization are required.</li> </ol>
+
+As a final overview, **Figure 5** summarizes the key operational and technical advantages of deploying a 5G Core Network using containerization and SDN principles, emphasizing benefits such as enhanced scalability, flexibility, and cost-efficiency.
 
 <img src="images/fig-5.svg" alt="Benefits of Containerized SDN-Based 5G Core Network" width="50%">
 
-*Fig: Benefits of a Containerized SDN-Based 5G Core Network*
-
-This figure summarizes the key operational and technical advantages of deploying a 5G Core Network using containerization and SDN principles, emphasizing benefits such as enhanced scalability, flexibility, and cost-efficiency.
+*Fig 5: Benefits of a Containerized SDN-Based 5G Core Network*
 
 ## 7. Conclusion
 
