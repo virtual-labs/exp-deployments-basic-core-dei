@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5G SBA Network Dashboard</title>
+    <link rel="stylesheet" href="css/main.css?v=4">
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="dashboard-container">
+
+        <!-- Top Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <h1>🌐 Basic Core Network Dashboard</h1>
+            </div>
+            <div class="toolbar-right">
+                <button id="btn-core-deploy" class="btn btn-success">🚀 Core Deploy</button>
+                <!-- Main Docker Terminal (controls NFs by command) -->
+                <button id="btn-docker-terminal" class="btn btn-docker-terminal" title="Open Main Docker Terminal">🐳 Terminal</button>
+                <!-- Main action buttons -->
+                <button id="btn-add-nf" class="btn btn-primary">➕ Add NF</button>
+                <button id="btn-clear" class="btn btn-danger">🗑️ Clears</button>
+                <button id="btn-validate" class="btn btn-info">✓ Validate</button>
+                <button id="btn-help" class="btn btn-secondary">❓ Help</button>
+            </div>
+        </div>
+
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+
+            <!-- Left Sidebar - NF Palette -->
+            <div class="sidebar-left">
+                <h3>Network Functions</h3>
+                <div class="nf-palette">
+                    <!-- NF types will be dynamically added here -->
+                </div>
+
+                <div class="connection-controls">
+                    <h3>Create Connection</h3>
+                    <button id="btn-select-source" class="btn btn-block">Select Source</button>
+                    <button id="btn-select-destination" class="btn btn-block" disabled>Select Destination</button>
+                    <button id="btn-cancel-connection" class="btn btn-block btn-cancel"
+                        style="display:none;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Center Canvas Area -->
+            <div class="canvas-container">
+                <canvas id="main-canvas"></canvas>
+
+                <!-- Canvas overlay messages -->
+                <div id="canvas-message" class="canvas-message"></div>
+            </div>
+
+            <!-- Right Sidebar - Configuration Panel -->
+            <div class="sidebar-right">
+                <div id="config-panel" class="config-panel">
+                    <div class="config-panel-header">
+                        <h3>⚙️ Configuration</h3>
+                        <button id="btn-toggle-config" class="btn-toggle-config" title="Hide/Show Configuration Panel (Ctrl+K)">
+                            <span id="config-toggle-icon">◀</span>
+                        </button>
+                    </div>
+                    <!-- Configuration form will be dynamically inserted here -->
+                    <div id="config-form">
+                        <p class="hint">Select a Network Function type to configure and start it</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Log Panel -->
+        <div class="log-panel" id="log-panel">
+            <div class="log-panel-header">
+                <div class="log-header-left">
+                    <h3>📋 Connection Request/Response Logs</h3>
+                    <button id="btn-toggle-logs" class="btn-toggle-logs" title="Hide/Show Logs (Ctrl+L)">
+                        <span id="toggle-icon">▼</span>
+                    </button>
+                </div>
+                <div class="log-controls">
+                    <select id="log-filter-nf">
+                        <option value="all">All NFs</option>
+                    </select>
+                    <select id="log-filter-level">
+                        <option value="all">All Levels</option>
+                        <option value="ERROR">Errors</option>
+                        <option value="WARNING">Warnings</option>
+                        <option value="INFO">Info</option>
+                        <option value="SUCCESS">Success</option>
+                    </select>
+                    <button id="btn-clear-logs" class="btn-small">Clear</button>
+                    <button id="btn-export-logs" class="btn-small">Export</button>
+                </div>
+            </div>
+            <div id="log-content" class="log-content">
+                <!-- Logs will be dynamically added here -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal for Adding NF -->
+    <div id="add-nf-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Select Network Function Type</h2>
+            <div id="nf-grid" class="nf-grid">
+                <!-- NF selection buttons will be added here -->
+            </div>
+            <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Hidden file input for loading topology -->
+    <input type="file" id="file-input-topology" accept=".json" style="display: none;">
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal" style="display:none;">
+        <div class="modal-content help-modal-content">
+            <h2>📚 5G Service-Based Architecture Guide</h2>
+            <div class="help-content">
+                <div class="help-section">
+                    <h3>🐳 Method 1: Terminal Deployment</h3>
+                    <ol class="help-steps">
+                        <li>Open the SBA Dashboard and click the <strong>Terminal</strong> button.</li>
+                        <li>Run <code>docker compose -f docker-compose.yml up -d</code> to deploy all NFs.</li>
+                        <li>Verify network creation using <code>docker network ls</code>.</li>
+                        <li>Check NF IP allocation using <code>docker network inspect oaiworkshop</code>.</li>
+                        <li>Stop all NFs using <code>docker compose -f docker-compose.yml down</code>.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h3>🖱️ Method 2: Manual NF Configuration</h3>
+                    <ol class="help-steps">
+                        <li>Select an NF from the dashboard to configure manually.</li>
+                        <li>Enter IP, port, and protocol, then click <strong>Start NF</strong>.</li>
+                        <li>Wait a few seconds for the NF to stabilize and connect.</li>
+                        <li>Repeat the process to start all required NFs.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h3>🚀 Method 3: One-Click Core Deploy</h3>
+                    <ol class="help-steps">
+                        <li>Use <strong>Core Deploy</strong> button for one-click deployment of all NFs.</li>
+                        <li>Check logs to confirm all NFs are started and connected.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h3>📡 Connectivity Test</h3>
+                    <ol class="help-steps">
+                        <li>Open an NF terminal and run <code>ping &lt;Target_NF_IP&gt;</code> to test connectivity.</li>
+                        <li>Ensure replies with 0% packet loss to confirm stable communication.</li>
+                    </ol>
+                </div>
+                <div class="help-section" style="margin-top:16px; padding:12px; background:#1a252f; border-radius:8px; text-align:center;">
+                    <a>For More Detailes</a><a href="../procedure.html" target="_blank" style="color:#4fc3f7; font-size:15px; text-decoration:none;">
+                        📄 View Full Procedures 
+                    </a>
+                </div>
+            </div>
+            <button id="help-close" class="btn btn-primary btn-block">Close</button>
+        </div>
+    </div>
+
+    <!-- Load all JavaScript files in correct order -->
+    <script src="js/data-store.js?v=4"></script>
+    <script src="js/nf-manager.js?v=4"></script>
+    <script src="js/connection-manager.js?v=4"></script>
+    <script src="js/bus-manager.js?v=4"></script>
+    <script src="js/ping-manager.js?v=4"></script>
+    <script src="js/log-engine.js?v=4"></script>
+    <script src="js/canvas-renderer.js?v=4"></script>
+    <script src="js/docker.js?v=4"></script>
+    <script src="js/ui-controller.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+
+</html>
