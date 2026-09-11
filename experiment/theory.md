@@ -1,3 +1,6 @@
+> **Audio Explanation:** For a comprehensive understanding of these theoretical concepts, you can listen on YouTube. 
+> [**Click here to listen the audio**](https://youtu.be/SXAiSryq7-4)
+
 ## 1. Introduction to the 5G Core Network (5GC)
 
 The 5G Core Network (5GC) marks a significant evolution in mobile network architecture. It is designed to support a broad range of services — from enhanced mobile broadband (eMBB) to ultra-reliable low-latency communications (URLLC) and massive machine-type communications (mMTC). The 5GC adopts a Service-Based Architecture (SBA) in which network functions are implemented as modular, cloud-native services that interact via well-defined, standardized interfaces.

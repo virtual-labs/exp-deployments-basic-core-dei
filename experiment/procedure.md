@@ -1,3 +1,5 @@
+**Video Walkthrough:** We have created a video demonstrating this experiment where we perform the procedure and explain the steps. [Click here to watch on YouTube]( https://youtu.be/hAkUsLQR-vI)
+
 ## Introduction to the 5G Service-Based Architecture (SBA) Dashboard
 
 The 5G Service-Based Architecture Dashboard allows you to deploy, configure, and validate core network functions (NFs) in a simulated 5G Core environment.
