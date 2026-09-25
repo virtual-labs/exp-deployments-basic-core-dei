@@ -1,0 +1,260 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "Q1. In the SBA dashboard, what is the purpose of the NF tile?",
+      "answers": {
+        "a": "To view UE location",
+        "b": "To select and configure a Network Function",
+        "c": "To display bandwidth usage",
+        "d": "To reset the dashboard"
+      },
+      "explanations": {
+        "a": "Incorrect — UE information is not shown on NF tiles.",
+        "b": "Correct — NF tiles are used to select, configure, and start specific NFs.",
+        "c": "Incorrect — Bandwidth usage is not displayed on NF tiles.",
+        "d": "Incorrect — Dashboard reset is a separate function."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. What information must be entered before starting an NF manually?",
+      "answers": {
+        "a": "UE ID and tracking area",
+        "b": "IP Address, Port Number, and Protocol",
+        "c": "PLMN and TAC",
+        "d": "Database password"
+      },
+      "explanations": {
+        "a": "Incorrect — UE information is unrelated to NF configuration.",
+        "b": "Correct — Every NF requires IP, port, and protocol before starting.",
+        "c": "Incorrect — PLMN/TAC are used for RAN, not NF deployment.",
+        "d": "Incorrect — Database credentials are not required here."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q3. During manual deployment, how does the system indicate that an NF is ready?",
+      "answers": {
+        "a": "NF tile turns red",
+        "b": "Dashboard freezes",
+        "c": "Logs show stabilization messages",
+        "d": "A popup notification appears"
+      },
+      "explanations": {
+        "a": "Incorrect — Red indicates error, not readiness.",
+        "b": "Incorrect — Freezing indicates a system issue.",
+        "c": "Correct — The Logs Panel displays 'NF ready' or similar messages.",
+        "d": "Incorrect — No popup is shown for readiness."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. In one-click deployment, what is the first internal step performed by the system?",
+      "answers": {
+        "a": "Deploying Network Functions",
+        "b": "Establishing internal connections",
+        "c": "Clearing existing topology",
+        "d": "Running ping tests"
+      },
+      "explanations": {
+        "a": "Incorrect — Deployment happens after topology cleanup.",
+        "b": "Incorrect — Connections are established only after NFs launch.",
+        "c": "Correct — The system first clears old or running NFs.",
+        "d": "Incorrect — Ping tests are done manually by the user."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q5. During automated core deployment, which step ensures NF-to-NF connectivity?",
+      "answers": {
+        "a": "Loading configurations",
+        "b": "Establishing internal SBA connections",
+        "c": "Performing terminal checks",
+        "d": "Reassigning port numbers"
+      },
+      "explanations": {
+        "a": "Incorrect — Config loading does not establish connectivity.",
+        "b": "Correct — Internal SBA connections are automatically created between NFs.",
+        "c": "Incorrect — Terminal checks are manual validation steps.",
+        "d": "Incorrect — Port reassignment does not link NFs."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q6. What message typically confirms that the AMF has successfully launched in the logs panel?",
+      "answers": {
+        "a": "AMF authentication failed",
+        "b": "AMF started successfully",
+        "c": "AMF disconnected",
+        "d": "Protocol mismatch detected"
+      },
+      "explanations": {
+        "a": "Incorrect — This indicates a failure.",
+        "b": "Correct — This message confirms a successful AMF startup.",
+        "c": "Incorrect — This indicates a link loss.",
+        "d": "Incorrect — This is an error message."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q7. Why is stabilization time (4–5 seconds) required after starting an NF?",
+      "answers": {
+        "a": "To upgrade the protocol version",
+        "b": "To allocate memory and initialize internal components",
+        "c": "To refresh the UI panel",
+        "d": "To generate authentication keys"
+      },
+      "explanations": {
+        "a": "Incorrect — Protocol upgrades are not automatic.",
+        "b": "Correct — NFs need a few seconds to initialize their internal modules.",
+        "c": "Incorrect — UI refresh is instantaneous.",
+        "d": "Incorrect — Authentication keys are not generated here."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. What does the “Core Deploy” button do in one-click deployment?",
+      "answers": {
+        "a": "Manually requests NF IPs",
+        "b": "Automatically launches and interconnects all NFs",
+        "c": "Generates Ping commands",
+        "d": "Opens configuration files"
+      },
+      "explanations": {
+        "a": "Incorrect — IPs are part of configuration, not deployment.",
+        "b": "Correct — It initiates automated deployment of all NFs at once.",
+        "c": "Incorrect — Ping must be executed manually.",
+        "d": "Incorrect — It does not open config files."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q9. Which panel is used to observe 'NRF registration completed' logs?",
+      "answers": {
+        "a": "Topology panel",
+        "b": "Logs panel",
+        "c": "Terminal panel",
+        "d": "Metrics panel"
+      },
+      "explanations": {
+        "a": "Incorrect — Topology shows NF layout, not logs.",
+        "b": "Correct — Logs Panel displays all NF registration and status logs.",
+        "c": "Incorrect — Terminal is for command execution.",
+        "d": "Incorrect — Metrics panel shows performance data."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q10. After opening the NF terminal, which detail is displayed at the top?",
+      "answers": {
+        "a": "UE location and TAC",
+        "b": "NF name and IP address",
+        "c": "NRF status",
+        "d": "CPU usage"
+      },
+      "explanations": {
+        "a": "Incorrect — UE details are not shown in NF terminal.",
+        "b": "Correct — The terminal header displays NF name and its assigned IP.",
+        "c": "Incorrect — NRF status is not shown here.",
+        "d": "Incorrect — CPU metrics are found in performance panels, not terminal."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q11. What does a successful ping test between NFs indicate?",
+      "answers": {
+        "a": "Wrong configuration values",
+        "b": "Stable inter-NF connectivity",
+        "c": "High CPU usage",
+        "d": "Different PLMN IDs"
+      },
+      "explanations": {
+        "a": "Incorrect — Wrong values would result in ping failures.",
+        "b": "Correct — Ping success means NFs can reach each other.",
+        "c": "Incorrect — CPU load does not impact ping results directly.",
+        "d": "Incorrect — PLMN IDs are unrelated to NF connectivity."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q12. Which result represents a perfect NF connectivity test?",
+      "answers": {
+        "a": "Packet Loss: 10%",
+        "b": "Time-out errors",
+        "c": "Continuous replies with 0% packet loss",
+        "d": "Missing logs"
+      },
+      "explanations": {
+        "a": "Incorrect — Any packet loss indicates connection issues.",
+        "b": "Incorrect — Time-outs show failure.",
+        "c": "Correct — 0% packet loss confirms strong connectivity.",
+        "d": "Incorrect — Missing logs do not indicate connectivity."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q13. What action does the dashboard perform before launching all NFs in one-click mode?",
+      "answers": {
+        "a": "Manual routing",
+        "b": "Clearing old or running NFs",
+        "c": "Adding new user profiles",
+        "d": "Resetting IP addresses to zero"
+      },
+      "explanations": {
+        "a": "Incorrect — Routing is handled internally.",
+        "b": "Correct — The system resets or clears older NFs before deployment.",
+        "c": "Incorrect — User profile creation is unrelated to core deployment.",
+        "d": "Incorrect — IPs are not reset automatically."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q14. What happens when you start an NF without selecting a protocol?",
+      "answers": {
+        "a": "The NF starts anyway",
+        "b": "The NF fails to initialize",
+        "c": "The system switches to 4G",
+        "d": "Logs panel closes automatically"
+      },
+      "explanations": {
+        "a": "Incorrect — Protocol selection is mandatory.",
+        "b": "Correct — Missing protocol results in NF startup failure.",
+        "c": "Incorrect — The system never switches to 4G automatically.",
+        "d": "Incorrect — Logs remain open regardless of protocol selection."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q15. Which NF action cannot be performed during stabilization time?",
+      "answers": {
+        "a": "Viewing logs",
+        "b": "Editing IP address",
+        "c": "Starting another NF",
+        "d": "Opening terminal"
+      },
+      "explanations": {
+        "a": "Incorrect — Logs can be viewed anytime.",
+        "b": "Correct — IP cannot be modified while NF is stabilizing.",
+        "c": "Incorrect — You can start other NFs independently.",
+        "d": "Incorrect — Terminal access is available."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    }
+  ]
+}
