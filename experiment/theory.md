@@ -13,7 +13,7 @@ As illustrated in **Figure 1**, the Service-Based Architecture (SBA) of the 5G C
 
 <div align="center">
   <img src="images/fig-1.svg" alt="5G Core Network Architecture" width="60%">
-  <p><em>Figure 1: 5G Core Network architecture, highlighting the central role of UDM and UDR in managing subscriber profiles.</em></p>
+  <p><em>Figure 1: 5G Core Network architecture.</em></p>
 </div>
 
 ## 2. Key Components of the 5G Core
