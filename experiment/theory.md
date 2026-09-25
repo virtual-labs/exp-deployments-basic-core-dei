@@ -11,9 +11,10 @@ Cloud-native design principles (containerization, microservices, and orchestrati
 
 As illustrated in **Figure 1**, the Service-Based Architecture (SBA) of the 5G Core Network highlights how various network functions communicate with each other through standardized, service-based interfaces.
 
-<img src="images/fig-1.svg" alt="5G Core Network Service-Based Architecture" width="50%">
-
-*Fig 1: 5G Core Network Service-Based Architecture*
+<div align="center">
+  <img src="images/fig-1.svg" alt="5G Core Network Architecture" width="60%">
+  <p><em>Figure 1: 5G Core Network architecture, highlighting the central role of UDM and UDR in managing subscriber profiles.</em></p>
+</div>
 
 ## 2. Key Components of the 5G Core
 
@@ -27,9 +28,10 @@ The UPF implements the user/data plane for 5GC: high-performance packet forwardi
 
 **Figure 2** depicts the step-by-step signaling flow required to establish a Protocol Data Unit (PDU) session. It demonstrates the critical interactions among the User Equipment (UE), the Control Plane functions, and the User Plane Function (UPF) during this establishment process.
 
-<img src="images/fig-2.svg" alt="5G Core Network Session Establishment Flow" width="50%">
-
-*Fig 2: 5G Core Network: Session Establishment Flow*
+<div align="center">
+  <img src="images/fig-2.svg" alt="5G Core Network Session Establishment Flow" width="60%">
+  <p><em>Figure 2: 5G Core Network: Session Establishment Flow</em></p>
+</div>
 
 
 ## 3. Software-Defined Networking (SDN) Principles in 5GC
@@ -44,9 +46,10 @@ The SMF closely resembles an SDN controller for the user plane: it maintains ses
 
 **Figure 3** demonstrates the conceptual mapping between traditional Software-Defined Networking (SDN) layers—namely the Application, Control, and Infrastructure layers—and their corresponding functional entities within the 5G Core Network.
 
-<img src="images/fig-3.svg" alt="SDN Architecture Mapping to 5G Core Network" width="50%">
-
-*Fig 3: SDN Architecture Mapping to 5G Core Network*
+<div align="center">
+  <img src="images/fig-3.svg" alt="SDN Architecture Mapping to 5G Core Network" width="60%">
+  <p><em>Figure 3: SDN Architecture Mapping to 5G Core Network</em></p>
+</div>
 
 ## 4. Integration of SDN, 5GC, and Container Technologies
 
@@ -72,9 +75,10 @@ Modern 5GC deployments combine SDN principles with cloud-native technologies (Do
 
 To further understand the practical implementation of these concepts, **Figure 4** outlines the detailed data path of a packet as it traverses from the Radio Access Network (RAN) through the containerized User Plane Function (UPF) within an SDN-enabled 5G environment.
 
-<img src="images/fig-4.svg" alt="Packet Flow in Containerized SDN-Based 5G Core Network" width="50%">
-
-*Fig 4: Packet Flow in a Containerized SDN-Based 5G Core Network*
+<div align="center">
+  <img src="images/fig-4.svg" alt="Packet Flow in Containerized SDN-Based 5G Core Network" width="60%">
+  <p><em>Figure 4: Packet Flow in a Containerized SDN-Based 5G Core Network</em></p>
+</div>
 
 ## 6. Challenges and Considerations
 
@@ -88,9 +92,10 @@ To further understand the practical implementation of these concepts, **Figure 4
 
 As a final overview, **Figure 5** summarizes the key operational and technical advantages of deploying a 5G Core Network using containerization and SDN principles, emphasizing benefits such as enhanced scalability, flexibility, and cost-efficiency.
 
-<img src="images/fig-5.svg" alt="Benefits of Containerized SDN-Based 5G Core Network" width="50%">
-
-*Fig 5: Benefits of a Containerized SDN-Based 5G Core Network*
+<div align="center">
+  <img src="images/fig-5.svg" alt="Benefits of Containerized SDN-Based 5G Core Network" width="60%">
+  <p><em>Figure 5: Benefits of a Containerized SDN-Based 5G Core Network</em></p>
+</div>
 
 ## 7. Conclusion
 
