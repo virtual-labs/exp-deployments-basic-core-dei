@@ -1,5 +1,7 @@
-> **Audio Explanation:** For a comprehensive understanding of these theoretical concepts, you can listen on YouTube. 
-> [**Click here to listen the audio**](https://youtu.be/SXAiSryq7-4)
+> **Audio Explanations:** For a more comprehensive understanding of these theoretical concepts, supplementary audio guides are available on YouTube.
+> 
+> - [**Listen in English**](https://youtu.be/0D1AQA9OBYo)
+> - [**Listen in Hindi**](https://youtu.be/SXAiSryq7-4)
 
 ## 1. Introduction to the 5G Core Network (5GC)
 
